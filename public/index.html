@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jimena & Carlos | Nuestra Historia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --primary: #c6a87d;
+      --secondary: #e8dcc8;
+      --text: #2f2f2f;
+      --muted: #7a7a7a;
+      --card: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+    }
+
+    header {
+      min-height: 90vh;
+      background: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url('../fotografias/portada.png') center 75%/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      padding: 2rem;
+      animation: fadeIn 2s ease-out forwards;
+    }
+
+    header h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin-bottom: .5rem;
+      transform: translateY(-20px);
+      opacity: 0;
+      animation: slideDown 1.2s forwards 0.5s;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeIn 1.2s forwards 1s;
+    }
+
+    section {
+      padding: 5rem 1.5rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 1.5rem;
+      padding: 3rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,.06);
+      transform: translateY(50px);
+      opacity: 0;
+      animation: slideUp 1s forwards;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .story-grid img {
+      width: 100%;
+      border-radius: 1.2rem;
+      object-fit: cover;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .story-grid img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    }
+
+    /* Timeline */
+    .timeline-section {
+      margin: 6rem auto;
+      max-width: 1200px;
+      padding: 0 1.5rem;
+      text-align: center;
+    }
+
+    .timeline-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      margin-bottom: 4rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUp 1s forwards;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 3rem;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 70px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: rgba(0,0,0,0.1);
+      z-index: 0;
+    }
+
+    .timeline-item {
+      background: #fdfbf8;
+      padding: 2rem 1.5rem 2.5rem;
+      border-radius: 16px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease-out;
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .timeline-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 1rem;
+      background: #e8ded3;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .timeline-icon img {
+      width: 145%;
+      height: 145%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .timeline-item:hover .timeline-icon img {
+      transform: scale(1.2);
+    }
+
+    .timeline-date {
+      display: block;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #8b7d6b;
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-item h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-item p {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .timeline-item.highlight {
+      background: #efe6dc;
+    }
+
+    /* Photos extra */
+    .photos-extra {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+    }
+
+    .photos-extra.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .photos-extra img {
+      width: 100%;
+      border-radius: 1.2rem;
+      object-fit: cover;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .photos-extra img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    }
+
+    /* CTA */
+    .cta {
+      text-align: center;
+      background: linear-gradient(135deg, var(--secondary), #fff);
+      border-radius: 2rem;
+      padding: 4rem 2rem;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: slideUp 1s forwards 0.5s;
+    }
+
+    .cta a {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 1rem 2.5rem;
+      border-radius: 3rem;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 1px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cta a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: var(--muted);
+      font-size: .9rem;
+      opacity: 0;
+      animation: fadeIn 1s forwards 0.5s;
+    }
+
+    /* NAV */
+    .nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      transition: background 0.3s ease;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.08em;
+      color: #fff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 1px;
+      background: #fff;
+      transition: width .3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      width: 26px;
+      height: 2px;
+      background: #fff;
+      transition: all .3s ease;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        inset: 0;
+        background: rgba(245, 240, 233, 0.95);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+        transform: translateY(-100%);
+        transition: transform .5s ease;
+      }
+
+      .nav-links a {
+        color: #333;
+        font-size: 1.1rem;
+      }
+
+      .nav-links.open {
+        transform: translateY(0);
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideDown {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .wedding-map {
+  text-align: center;
+  background: linear-gradient(135deg, var(--secondary), #fff);
+  border-radius: 2rem;
+  padding: 3rem 2rem;
+  margin-top: 3rem;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+  opacity: 0;
+  transform: translateY(30px);
+  animation: slideUp 1s forwards 0.5s;
+}
+
+.wedding-map h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.wedding-map p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.map-container {
+  width: 100%;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.map-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 0.8rem 2rem;
+  border-radius: 3rem;
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.map-link:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.map-address {
+  font-size: 1rem;
+  color: #555;
+  margin-top: 0;
+}
+.confirmation {
+  text-align: center;
+  background: linear-gradient(135deg, #d9f5e5, #ffffff);
+  border-radius: 2rem;
+  padding: 4rem 2rem;
+  margin: 3rem auto;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+  opacity: 0;
+  transform: translateY(30px);
+  animation: slideUp 1s forwards 0.5s;
+}
+
+.confirmation h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.confirmation p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.confirmation-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.confirm-btn {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  border-radius: 3rem;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: #fff;
+  font-size: 1rem;
+  min-width: 250px;
+}
+
+.confirm-btn.novio {
+  background: #c6a87d; /* color principal */
+}
+
+.confirm-btn.novia {
+  background: #e8a87d; /* color secundario para diferenciar */
+}
+
+.confirm-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.confirmation .note {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #777;
+}
+
+header {
+  position: relative;
+  min-height: 90vh;
+  background: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
+              url('../fotografias/portada.png') center 75%/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  padding: 2rem;
+}
+
+.header-content h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+}
+
+.header-content .subtitle {
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+  text-shadow: 1px 1px 8px rgba(0,0,0,0.6);
+}
+
+.header-content .wedding-date {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3vw, 2rem); /* tamaño notable pero elegante */
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 2px 2px 12px rgba(0,0,0,0.75); /* resalta sobre la imagen */
+  margin-top: 0.5rem;
+}
+
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="nav-logo">Jimena & Carlos</div>
+    <ul class="nav-links">
+      <li><a href="#historia">Historia</a></li>
+      <li><a href="#momentos">Momentos</a></li>
+      <li><a href="listaderegalos.html">Lista de regalos</a></li>
+      <li><a href="#confirmacion">Confirmar asistencia</a></li>
+    </ul>
+    <button class="hamburger" aria-label="Menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <div class="header-content">
+    <h1>Jimena & Carlos</h1>
+    <p class="subtitle">Nuestra historia de amor</p>
+    <p class="wedding-date">📅 2 de abril 2026 – Recepción</p>
+  </div>
+</header>
+
+
+
+<section>
+  <div class="card">
+    <div class="story-grid">
+      <div>
+        <h2>Cómo empezó todo</h2>
+        <p>
+          Lo nuestro comenzó de una forma sencilla, sin imaginar que ese primer encuentro
+          marcaría el inicio de una historia que hoy celebramos con quienes más queremos.
+        </p>
+      </div>
+      <img src="../fotografias/playa.jpg" alt="Primeros momentos" />
+    </div>
+<section id="ubicacion" class="wedding-map">
+  <h2>Ubicación de la Boda</h2>
+  <p>¡Ven a celebrar con nosotros! Aquí puedes ver cómo llegar al lugar del evento:</p>
+
+  <!-- Botón para abrir Google Maps -->
+  <a href="https://maps.app.goo.gl/r29eTLoBm3Tur2Cs7" target="_blank" class="map-link">
+    Ver en Google Maps
+  </a>
+
+  <!-- Dirección escrita -->
+  <p class="map-address">I ETAPA, Nueva Toledo 208, Cieneguilla 15593</p>
+</section>
+<section id="confirmacion" class="confirmation">
+  <h2>Confirma tu asistencia</h2>
+  <p>Por favor confirma tu asistencia antes del <strong>12 de marzo</strong>, 3 semanas antes de nuestra boda, contactando directamente con:</p>
+
+  <div class="confirmation-buttons">
+    <a href="https://wa.link/ku81ht" target="_blank" class="confirm-btn novio">
+      Confirmar con Carlos (Novio)
+    </a>
+    <a href="https://wa.link/7mxnrw" target="_blank" class="confirm-btn novia">
+      Confirmar con Jimena (Novia)
+    </a>
+  </div>
+
+  <p class="note">¡Esperamos celebrar este día tan especial contigo!</p>
+</section>
+
+    <section class="timeline-section" id="historia">
+      <h2>Nuestra historia</h2>
+      <div class="timeline">
+
+        <!-- Timeline items -->
+        <div class="timeline-item">
+          <div class="timeline-icon">
+            <img src="../fotografias/temploicono.png" alt="Encuentro">
+          </div>
+          <span class="timeline-date">Abril 2023</span>
+          <h3>Un encuentro inesperado</h3>
+          <p>Lo que parecía casual se convirtió en el inicio de todo.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-icon">
+            <img src="../fotografias/tupper.png" alt="Tapper">
+          </div>
+          <span class="timeline-date">Julio 2023</span>
+          <h3>Un tupper nos unió</h3>
+          <p>Entre risas, comida y complicidad, algo empezó a crecer.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-icon">
+            <img src="../fotografias/baile.png" alt="Baile">
+          </div>
+          <span class="timeline-date">Octubre 2023</span>
+          <h3>El primer baile</h3>
+          <p>Sin coreografía, pero con el corazón sincronizado.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-icon">
+            <img src="../fotografias/limpieza.png" alt="Limpieza">
+          </div>
+          <span class="timeline-date">Octubre 2023</span>
+          <h3>Limpieza juntos</h3>
+          <p>Aprendimos que en equipo todo es más fácil.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-icon">
+            <img src="../fotografias/caminata.png" alt="Caminata">
+          </div>
+          <span class="timeline-date">Diciembre 2023</span>
+          <h3>Caminata a casa</h3>
+          <p>Las mejores conversaciones siempre fueron caminando.</p>
+        </div>
+
+        <div class="timeline-item highlight">
+          <div class="timeline-icon">
+            <img src="../fotografias/parque.png" alt="Pedida">
+          </div>
+          <span class="timeline-date">6 dic 2023</span>
+          <h3>Una pedida especial</h3>
+          <p>Un momento que guardaremos para siempre.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-icon">
+            <img src="../fotografias/puertas.png" alt="Puertas">
+          </div>
+          <span class="timeline-date">Diciembre 2023</span>
+          <h3>Se abrieron las puertas</h3>
+          <p>Comenzamos a construir nuestro hogar.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-icon">
+            <img src="../fotografias/corazon.png" alt="Amor">
+          </div>
+          <span class="timeline-date">14 feb 2024</span>
+          <h3>Fortaleciendo el amor</h3>
+          <p>Cada día más fuertes, más unidos.</p>
+        </div>
+
+        <div class="timeline-item highlight">
+          <div class="timeline-icon">
+            <img src="../fotografias/anillo.png" alt="Anillo">
+          </div>
+          <span class="timeline-date">21 dic 2025</span>
+          <h3>Una pedida nerviosa</h3>
+          <p>Con nervios, emoción y un sí para siempre.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="momentos" class="photos-extra">
+      <img src="../fotografias/beso1.jpg" alt="Foto pedida 1">
+      <img src="../fotografias/sorpresa.jpg" alt="Foto pedida 2">
+      <img src="../fotografias/manos1 (1).jpg" alt="Foto pedida 3">
+    </section>
+  </div>
+</section>
+
+<section>
+  <div class="cta">
+    <h2>Lista de regalos</h2>
+    <p>Si desean acompañarnos con un detalle, hemos preparado un espacio especial.</p>
+    <a href="listaderegalos.html">Ver lista de regalos</a>
+  </div>
+</section>
+
+<footer>
+  Con amor, Jimena & Carlos
+</footer>
+
+<script>
+  const hamburger = document.querySelector('.hamburger');
+  const navLinks = document.querySelector('.nav-links');
+  const links = document.querySelectorAll('.nav-links a');
+
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+    });
+  });
+
+  // Scroll animations
+  const timelineItems = document.querySelectorAll('.timeline-item');
+  const photosExtra = document.querySelector('.photos-extra');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {threshold: 0.2});
+
+  timelineItems.forEach(item => observer.observe(item));
+  observer.observe(photosExtra);
+</script>
+
+</body>
+</html>

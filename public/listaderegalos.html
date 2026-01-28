@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Regalos | Jimena & Carlos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/regalos.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="gift-header">
+  <h1>Lista de Regalos</h1>
+  <p>
+    Su presencia es lo más importante para nosotros 🤍  
+    Si desean apoyarnos, pueden elegir libremente el monto que gusten.
+  </p>
+  <a href="index.html" class="back-btn">← Volver al inicio</a>
+</header>
+
+<!-- ===== LISTA DE REGALOS ===== -->
+<section class="gift-grid">
+
+  <!-- Refrigeradora -->
+  <div class="gift-card mint" data-target="Refrigeradora">
+    <img src="../fotografias/refrigeradora.png" alt="Refrigeradora">
+    <h3>Refrigeradora</h3>
+    <p>Para comenzar nuestro hogar y conservar muchos momentos dulces.</p>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-Refrigeradora" data-progress="0%" style="width:0%"></div>
+    </div>
+    <span class="progress-text" id="progressText-Refrigeradora">S/ 0 / S/ 2000</span>
+    <button onclick="openModal('Refrigeradora')">Aportar</button>
+  </div>
+
+  <!-- Cocina -->
+  <div class="gift-card blush" data-target="Cocina">
+    <img src="../fotografias/cocina.png" alt="Cocina">
+    <h3>Cocina</h3>
+    <p>Donde nacerán nuevas recetas y recuerdos juntos.</p>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-Cocina" data-progress="0%" style="width:0%"></div>
+    </div>
+    <span class="progress-text" id="progressText-Cocina">S/ 0 / S/ 1500</span>
+    <button onclick="openModal('Cocina')">Aportar</button>
+  </div>
+
+  <!-- Cubiertos -->
+  <div class="gift-card lavender" data-target="Cubiertos">
+    <img src="../fotografias/cubiertos.png" alt="Cubiertos">
+    <h3>Cubiertos</h3>
+    <p>Porque cada detalle suma en nuestro nuevo hogar.</p>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-Cubiertos" data-progress="0%" style="width:0%"></div>
+    </div>
+    <span class="progress-text" id="progressText-Cubiertos">S/ 0 / S/ 300</span>
+    <button onclick="openModal('Cubiertos')">Aportar</button>
+  </div>
+
+  <!-- Platos -->
+  <div class="gift-card sand" data-target="Platos">
+    <img src="../fotografias/platos.png" alt="Platos">
+    <h3>Platos</h3>
+    <p>Para compartir cada comida con alegría.</p>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-Platos" data-progress="0%" style="width:0%"></div>
+    </div>
+    <span class="progress-text" id="progressText-Platos">S/ 0 / S/ 500</span>
+    <button onclick="openModal('Platos')">Aportar</button>
+  </div>
+
+  <!-- TV -->
+  <div class="gift-card sky" data-target="TV">
+    <img src="../fotografias/tv.png" alt="TV">
+    <h3>TV</h3>
+    <p>Para disfrutar momentos juntos y compartir series y películas.</p>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-TV" data-progress="0%" style="width:0%"></div>
+    </div>
+    <span class="progress-text" id="progressText-TV">S/ 0 / S/ 1800</span>
+    <button onclick="openModal('TV')">Aportar</button>
+  </div>
+
+  <!-- Mueble -->
+  <div class="gift-card mint" data-target="Mueble">
+    <img src="../fotografias/mueble.png" alt="Mueble">
+    <h3>Mueble</h3>
+    <p>Para crear un espacio cálido y lleno de amor.</p>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-Mueble" data-progress="0%" style="width:0%"></div>
+    </div>
+    <span class="progress-text" id="progressText-Mueble">S/ 0 / S/ 1200</span>
+    <button onclick="openModal('Mueble')">Aportar</button>
+  </div>
+
+  <!-- Juego de vasos -->
+  <div class="gift-card blush" data-target="Vasos">
+    <img src="../fotografias/vasos.png" alt="Juego de vasos">
+    <h3>Juego de vasos</h3>
+    <p>Para disfrutar bebidas y brindar juntos en cada ocasión.</p>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-Vasos" data-progress="0%" style="width:0%"></div>
+    </div>
+    <span class="progress-text" id="progressText-Vasos">S/ 0 / S/ 400</span>
+    <button onclick="openModal('Vasos')">Aportar</button>
+  </div>
+
+  <!-- Microondas -->
+  <div class="gift-card lavender" data-target="Microondas">
+    <img src="../fotografias/microondas.png" alt="Microondas">
+    <h3>Microondas</h3>
+    <p>Para facilitar la vida diaria y calentar con amor nuestra comida.</p>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-Microondas" data-progress="0%" style="width:0%"></div>
+    </div>
+    <span class="progress-text" id="progressText-Microondas">S/ 0 / S/ 700</span>
+    <button onclick="openModal('Microondas')">Aportar</button>
+  </div>
+
+</section>
+
+<!-- ===== MODAL ===== -->
+<div class="modal" id="giftModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">×</span>
+    <h2 id="giftTitle"></h2>
+
+    <form onsubmit="confirmGift(event)">
+      <input type="text" id="nombre" placeholder="Tu nombre" required>
+      <select id="moneda" required>
+        <option value="PEN">Soles (S/)</option>
+        <option value="USD">Dólares ($)</option>
+      </select>
+      <input type="number" id="monto" placeholder="Monto" min="1" step="0.01" required>
+
+      <p class="exchange-note">
+        Si el aporte es en dólares, se calculará con tipo de cambio
+        <strong>1 USD = S/ 3.40</strong>
+      </p>
+
+      <div class="payment-info">
+        <p><strong>Yape:</strong> 960778888 - Carlos Ruiz</p>
+        <img src="../fotografias/yape.jpg" alt="QR Yape" class="qr-code">
+        <p><strong>BCP:</strong> Soles S/ 19199927056017 | Dólares $ 19108927605181</p>
+        <p><strong>Interbank:</strong> Soles S/ 8983489742065</p>
+      </div>
+
+      <button type="submit">Ya realicé la transferencia</button>
+    </form>
+  </div>
+</div>
+<div class="confirmation-modal" id="confirmationModal">
+  <div class="modal-content">
+    <h2>¡Gracias por tu regalo! 🤍</h2>
+    <p>Jimena y Carlos recibieron tu aporte.  
+       Nos alegra que seas parte de nuestra historia y esperamos verte en nuestra boda.</p>
+    <button onclick="closeConfirmation()">Cerrar</button>
+  </div>
+</div>
+
+<!-- ===== MENSAJE FINAL ===== -->
+<section class="gift-note">
+  <p>
+    Cualquier aporte, desde <strong>S/ 5, S/ 10 o el monto que deseen</strong>,
+    será recibido con mucho cariño.  
+    Gracias por ser parte de nuestra historia 🤍
+  </p>
+</section>
+
+<!-- ===== JS ===== -->
+<script>
+const TIPO_CAMBIO = 3.4;
+let regaloActual = "";
+
+// Totales y acumulados
+const regalosTotales = {
+  "Refrigeradora": 2000,
+  "Cocina": 1500,
+  "Cubiertos": 300,
+  "Platos": 500,
+  "TV": 1800,
+  "Mueble": 1200,
+  "Vasos": 400,
+  "Microondas": 700
+};
+
+const regalosAcumulados = {
+  "Refrigeradora": 0,
+  "Cocina": 0,
+  "Cubiertos": 0,
+  "Platos": 0,
+  "TV": 0,
+  "Mueble": 0,
+  "Vasos": 0,
+  "Microondas": 0
+};
+
+// Abrir modal principal
+function openModal(regalo) {
+  regaloActual = regalo;
+  document.getElementById("giftTitle").innerText = regalo;
+  document.getElementById("giftModal").classList.add("show");
+
+  // Limpiar formulario
+  document.getElementById("nombre").value = "";
+  document.getElementById("moneda").value = "PEN";
+  document.getElementById("monto").value = "";
+}
+
+// Cerrar modal principal
+function closeModal() {
+  document.getElementById("giftModal").classList.remove("show");
+}
+
+// Confirmar regalo y mostrar modal de confirmación
+function confirmGift(e) {
+  e.preventDefault();
+
+  const nombre = document.getElementById("nombre").value.trim();
+  const monto = parseFloat(document.getElementById("monto").value);
+  const moneda = document.getElementById("moneda").value;
+
+  if (!nombre || !monto || isNaN(monto)) return; // Validación
+
+  let montoSoles = monto;
+  if (moneda === "USD") montoSoles *= TIPO_CAMBIO;
+
+  // Actualizar acumulado
+  regalosAcumulados[regaloActual] += montoSoles;
+  const total = regalosTotales[regaloActual];
+  const porcentaje = Math.min((regalosAcumulados[regaloActual] / total) * 100, 100);
+
+  document.getElementById("progress-" + regaloActual).style.width = porcentaje + "%";
+  document.getElementById("progressText-" + regaloActual).innerText =
+    `S/ ${regalosAcumulados[regaloActual].toFixed(2)} / S/ ${total}`;
+
+  // Cerrar modal principal
+  closeModal();
+
+  // Abrir modal de confirmación **después de un pequeño delay** para asegurar que el DOM actualice
+  setTimeout(() => {
+    const confirmation = document.getElementById("confirmationModal");
+    confirmation.querySelector("h2").innerText = `¡Gracias ${nombre}! 🤍`;
+    confirmation.classList.add("show");
+  }, 100); // 100ms de delay
+}
+
+// Cerrar modal de confirmación
+function closeConfirmation() {
+  document.getElementById("confirmationModal").classList.remove("show");
+}
+
+// Animaciones de entrada
+const gifts = document.querySelectorAll('.gift-card');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.2 });
+
+gifts.forEach(gift => {
+  gift.classList.add('animate');
+  observer.observe(gift);
+});
+</script>
+
+
+</body>
+</html>
+

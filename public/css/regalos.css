@@ -1,0 +1,412 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #faf8f6;
+  color: #4a4a4a;
+  line-height: 1.6;
+}
+
+/* ===== HEADER ===== */
+.gift-header {
+  min-height: 55vh;
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.35), /* un poco más oscuro para contraste */
+      rgba(0, 0, 0, 0.35)
+    ),
+    url('/fotografias/playa.jpg') center 80% / cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  color: #fff;
+}
+
+.gift-header h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem); /* más grande en pantallas grandes */
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* sombra difuminada para resaltar */
+}
+
+.gift-header p {
+  font-size: clamp(1.1rem, 3vw, 1.4rem); /* ligeramente más grande */
+  line-height: 1.6;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6); /* sombra sutil para legibilidad */
+}
+
+.gift-header .back-btn {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.8rem 2rem;
+  border-radius: 3rem;
+  background: rgba(198, 168, 125, 0.9); /* color de tu diseño */
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gift-header .back-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+
+.gift-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.gift-header p {
+  max-width: 600px;
+  font-size: 1rem;
+  opacity: 0.95;
+  margin-bottom: 1.5rem;
+}
+
+.back-btn {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #4a4a4a;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+/* ===== GRID ===== */
+.gift-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  padding: 4rem 8%;
+}
+
+/* ===== CARD ===== */
+.gift-card {
+  border-radius: 22px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.gift-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.gift-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.gift-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  margin: 1rem;
+}
+
+.gift-card p {
+  font-size: 0.9rem;
+  margin: 0 1rem 1.2rem;
+  opacity: 0.85;
+}
+
+.gift-card button {
+  margin: 0 1rem 1.5rem;
+  width: calc(100% - 2rem);
+  padding: 0.8rem;
+  border: none;
+  border-radius: 25px;
+  background: #c7a17a;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.gift-card button:hover {
+  background: #b08968;
+  transform: translateY(-2px);
+}
+
+/* ===== COLORES PASTEL ===== */
+.mint { background: #d4f0e4; }      /* verde bebé */
+.blush { background: #fddde6; }     /* rosa bebé */
+.lavender { background: #e6f0fa; }  /* celeste bebé */
+.sand { background: #f9ece4; }      /* marrón bebé */
+.sky { background: #d9f0fc; }       /* celeste más suave */
+
+/* ===== BARRA DE PROGRESO ===== */
+.progress-bar {
+  width: 90%;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  height: 12px;
+  margin: 0.5rem auto 0.8rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #a8e6cf, #dcedc1);
+  transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+  display: block;
+  text-align: center;
+  font-size: 0.8rem;
+  margin-bottom: 0.8rem;
+  color: #555;
+}
+
+/* ===== NOTA FINAL ===== */
+.gift-note {
+  text-align: center;
+  padding: 3rem 10%;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+/* ===== MODAL PRINCIPAL MEJORADO ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: #fff;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 30px;
+  padding: 2.5rem 2rem;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.4s ease-out;
+}
+
+.modal.show .modal-content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.modal-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #4a4a4a;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 0.9rem;
+  margin-bottom: 1rem;
+  border-radius: 15px;
+  border: 1px solid #ddd;
+  font-size: 0.95rem;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+  outline: none;
+  border-color: #c7a17a;
+  box-shadow: 0 0 10px rgba(199,161,122,0.3);
+}
+
+.modal-content button {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #c7a17a, #b08968);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-content button:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: linear-gradient(135deg, #b08968, #a17b58);
+}
+
+.payment-info .qr-code {
+  width: 100%;
+  max-width: 120px;
+  height: auto;
+  margin: 1rem auto;
+  display: block;
+}
+
+/* Modal de confirmación */
+.confirmation-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.7);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+.confirmation-modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.confirmation-modal .modal-content {
+  background: linear-gradient(135deg, #f9ece4, #fddde6);
+  max-width: 400px;
+  padding: 2rem 1.5rem;
+  border-radius: 30px;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.4s ease-out;
+}
+
+.confirmation-modal.show .modal-content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.confirmation-modal .modal-content h2 {
+  margin-bottom: 1rem;
+  color: #b08968;
+}
+
+.confirmation-modal .modal-content p {
+  margin-bottom: 1.5rem;
+  color: #4a4a4a;
+}
+
+.confirmation-modal .modal-content button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  border: none;
+  background: #c7a17a;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.confirmation-modal .modal-content button:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: #b08968;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .gift-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .gift-grid {
+    padding: 3rem 6%;
+  }
+}
+/* Animaciones de aparición */
+.animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+
+.animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hover en tarjetas */
+.gift-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 35px rgba(0,0,0,0.12);
+  transition: all 0.4s ease;
+}
+
+/* Hover en botones */
+.gift-card button:hover,
+.modal-content button:hover {
+  transform: translateY(-2px);
+  background: #a17b58;
+  transition: all 0.3s ease;
+}
+
+/* Barra de progreso animada */
+.progress {
+  width: 0%;
+  transition: width 1.5s ease-in-out;
+}
+
+/* Modal animación */
+.modal-content {
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.3s ease-out;
+}
+
+.modal.show .modal-content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Pequeño efecto de “pulse” en el hover del modal box */
+.payment-box:hover {
+  transform: scale(1.03);
+  transition: all 0.3s ease;
+}
+.payment-info .qr-code {
+  width: 100%;        /* que ocupe el ancho disponible */
+  max-width: 120px;   /* tamaño máximo */
+  height: auto;       /* mantiene proporción */
+  margin: 0.5rem auto 1rem;
+  display: block;
+}
