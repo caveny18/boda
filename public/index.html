@@ -4,152 +4,338 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jimena & Carlos | Nuestra Historia</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    /* --- VARIABLES Y CONFIGURACIÓN --- */
     :root {
-      --bg: #faf9f7;
-      --primary: #c6a87d;
-      --secondary: #e8dcc8;
-      --text: #2f2f2f;
-      --muted: #7a7a7a;
-      --card: #ffffff;
+      --bg: #fdfcfb;
+      --primary: #b08d55; /* Un dorado más elegante y oscuro */
+      --primary-hover: #967642;
+      --secondary: #f4efe9;
+      --text-main: #2c2c2c;
+      --text-muted: #666666;
+      --card-bg: #ffffff;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 20px 40px -10px rgba(176, 141, 85, 0.15);
+      --radius: 20px;
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
       background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
+      color: var(--text-main);
+      line-height: 1.8;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
     h1, h2, h3 {
       font-family: 'Playfair Display', serif;
-      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.2;
     }
 
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a { text-decoration: none; transition: all 0.3s ease; }
+
+    /* --- HEADER PREMIUM --- */
     header {
-      min-height: 90vh;
-      background: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url('../fotografias/portada.png') center 75%/cover no-repeat;
+      position: relative;
+      min-height: 100vh; /* Pantalla completa */
+      background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.2)), 
+                  url('../fotografias/portada.png') center/cover no-repeat fixed; /* Efecto Parallax */
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
       text-align: center;
       color: #fff;
       padding: 2rem;
-      animation: fadeIn 2s ease-out forwards;
     }
 
-    header h1 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      margin-bottom: .5rem;
-      transform: translateY(-20px);
+    .header-content {
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .header-content h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      animation: slideDown 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
       opacity: 0;
-      animation: slideDown 1.2s forwards 0.5s;
+      transform: translateY(-30px);
     }
 
-    header p {
-      font-size: 1.1rem;
-      letter-spacing: 2px;
+    .header-content .subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
+      margin-bottom: 2rem;
+      font-weight: 300;
+      animation: fadeIn 1.5s ease-out 0.5s forwards;
       opacity: 0;
-      animation: fadeIn 1.2s forwards 1s;
+    }
+
+    .header-content .wedding-date {
+      display: inline-block;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      padding: 0.5rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.6);
+      border-bottom: 1px solid rgba(255,255,255,0.6);
+      animation: fadeIn 1.5s ease-out 1s forwards;
+      opacity: 0;
+    }
+
+    /* --- NAVEGACIÓN GLASSMORPHISM --- */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background 0.3s ease;
+    }
+
+    .nav.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .nav.scrolled .nav-logo, .nav.scrolled .nav-links a, .nav.scrolled .hamburger span {
+      color: var(--text-main);
+      background-color: var(--text-main); /* Para las lineas del hamburger */
+    }
+    
+    .nav.scrolled .hamburger span { background: var(--text-main); }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #fff;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after { width: 100%; }
+
+    /* --- LAYOUT GENERAL --- */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
     }
 
     section {
-      padding: 5rem 1.5rem;
-      max-width: 1100px;
-      margin: auto;
+      padding: 6rem 0;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
     }
 
-    .card {
-      background: var(--card);
-      border-radius: 1.5rem;
-      padding: 3rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,.06);
-      transform: translateY(50px);
-      opacity: 0;
-      animation: slideUp 1s forwards;
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- SECCIÓN HISTORIA (CARD FLOTANTE) --- */
+    .intro-section {
+      margin-top: -80px; /* Superposición elegante sobre el header */
+      position: relative;
+      z-index: 10;
+      padding-top: 0;
+    }
+
+    .main-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 4rem;
+      box-shadow: var(--shadow-lg);
     }
 
     .story-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 3rem;
+      gap: 4rem;
       align-items: center;
     }
 
-    .story-grid img {
-      width: 100%;
-      border-radius: 1.2rem;
-      object-fit: cover;
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    .story-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
     }
 
-    .story-grid img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    .story-content p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
     }
 
-    /* Timeline */
-    .timeline-section {
-      margin: 6rem auto;
-      max-width: 1200px;
-      padding: 0 1.5rem;
-      text-align: center;
+    .story-image img {
+      border-radius: var(--radius);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      transition: transform 0.5s ease;
     }
 
-    .timeline-section h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.6rem;
-      margin-bottom: 4rem;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: slideUp 1s forwards;
-    }
+    .story-image img:hover { transform: scale(1.02); }
 
-    .timeline {
+    /* --- MAPA Y CONFIRMACIÓN --- */
+    .info-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 3rem;
-      position: relative;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
     }
 
-    .timeline::before {
-      content: "";
-      position: absolute;
-      top: 70px;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: rgba(0,0,0,0.1);
-      z-index: 0;
+    .info-card {
+      background: #fff;
+      padding: 3rem 2rem;
+      border-radius: var(--radius);
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.03);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .timeline-item {
-      background: #fdfbf8;
-      padding: 2rem 1.5rem 2.5rem;
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .info-card h2 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--text-main); }
+    .info-card p { margin-bottom: 2rem; color: var(--text-muted); }
+
+    /* BOTONES */
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 10px 20px -5px rgba(198, 168, 125, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 25px -5px rgba(198, 168, 125, 0.6);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .map-address { margin-top: 1.5rem; font-size: 0.9rem; font-style: italic; }
+    
+    .confirmation-buttons { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
+    .confirmation-buttons .btn { width: 100%; max-width: 300px; }
+
+    /* --- TIMELINE DE CUADRÍCULA --- */
+    .timeline-section { text-align: center; padding-top: 2rem; }
+    
+    .timeline-section h2 {
+      font-size: 3rem;
+      margin-bottom: 4rem;
+      color: var(--primary);
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .timeline-card {
+      background: #fff;
+      padding: 2.5rem 2rem;
       border-radius: 16px;
-      position: relative;
-      z-index: 1;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-      opacity: 0;
-      transform: translateY(50px);
-      transition: all 0.8s ease-out;
+      text-align: center;
+      transition: transform 0.4s ease;
+      border-bottom: 3px solid transparent;
+      box-shadow: var(--shadow-sm);
     }
 
-    .timeline-item.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .timeline-card:hover {
+      transform: translateY(-10px);
+      border-bottom-color: var(--primary);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .timeline-card.highlight {
+      background: linear-gradient(135deg, #fff 0%, #fcf9f4 100%);
+      border: 1px solid #efe6dc;
     }
 
     .timeline-icon {
-      width: 70px;
-      height: 70px;
-      margin: 0 auto 1rem;
-      background: #e8ded3;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      background: var(--secondary);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -158,161 +344,69 @@
     }
 
     .timeline-icon img {
-      width: 145%;
-      height: 145%;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-
-    .timeline-item:hover .timeline-icon img {
-      transform: scale(1.2);
     }
 
     .timeline-date {
       display: block;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
       text-transform: uppercase;
-      color: #8b7d6b;
-      margin-bottom: 0.5rem;
     }
 
-    .timeline-item h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-    }
+    .timeline-card h3 { font-size: 1.4rem; margin-bottom: 0.8rem; }
+    .timeline-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
-    .timeline-item p {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.6;
-    }
-
-    .timeline-item.highlight {
-      background: #efe6dc;
-    }
-
-    /* Photos extra */
+    /* --- GALERÍA FOTOS --- */
     .photos-extra {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-top: 3rem;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s ease-out;
-    }
-
-    .photos-extra.visible {
-      opacity: 1;
-      transform: translateY(0);
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
     }
 
     .photos-extra img {
       width: 100%;
-      border-radius: 1.2rem;
+      height: 350px;
       object-fit: cover;
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      border-radius: var(--radius);
+      transition: all 0.5s ease;
+      cursor: pointer;
     }
 
     .photos-extra img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      transform: scale(0.98);
+      filter: brightness(1.05);
     }
 
-    /* CTA */
-    .cta {
-      text-align: center;
-      background: linear-gradient(135deg, var(--secondary), #fff);
-      border-radius: 2rem;
+    /* --- CTA REGALOS --- */
+    .cta-section { padding-bottom: 6rem; }
+    .cta-box {
+      background: var(--secondary);
+      border-radius: var(--radius);
       padding: 4rem 2rem;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: slideUp 1s forwards 0.5s;
+      text-align: center;
     }
+    
+    .cta-box h2 { margin-bottom: 1rem; }
+    .cta-box p { margin-bottom: 2rem; color: var(--text-muted); }
 
-    .cta a {
-      display: inline-block;
-      margin-top: 1.5rem;
-      padding: 1rem 2.5rem;
-      border-radius: 3rem;
-      background: var(--primary);
-      color: #fff;
-      text-decoration: none;
-      font-weight: 500;
-      letter-spacing: 1px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .cta a:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    /* Footer */
+    /* --- FOOTER --- */
     footer {
+      background: #1a1a1a;
+      color: rgba(255,255,255,0.6);
       text-align: center;
       padding: 3rem 1.5rem;
-      color: var(--muted);
-      font-size: .9rem;
-      opacity: 0;
-      animation: fadeIn 1s forwards 0.5s;
-    }
-
-    /* NAV */
-    .nav {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 1.5rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 10;
-      transition: background 0.3s ease;
-    }
-
-    .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      letter-spacing: 0.08em;
-      color: #fff;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: #fff;
-      text-decoration: none;
       font-size: 0.9rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      position: relative;
-      transition: color 0.3s ease;
+      letter-spacing: 1px;
     }
 
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -6px;
-      width: 0;
-      height: 1px;
-      background: #fff;
-      transition: width .3s ease;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    /* HAMBURGER */
+    /* --- MENÚ HAMBURGUESA --- */
     .hamburger {
       display: none;
       flex-direction: column;
@@ -320,208 +414,53 @@
       background: none;
       border: none;
       cursor: pointer;
+      z-index: 1001;
     }
 
     .hamburger span {
-      width: 26px;
+      width: 30px;
       height: 2px;
       background: #fff;
-      transition: all .3s ease;
+      transition: all 0.3s ease;
     }
 
-    /* MOBILE */
-    @media (max-width: 768px) {
+    /* --- RESPONSIVO (MOBILE) --- */
+    @media (max-width: 900px) {
+      .header-content h1 { font-size: 3.5rem; }
+      .story-grid { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
+      .main-card { padding: 2.5rem 1.5rem; }
+      .photos-extra { grid-template-columns: 1fr; }
+      
+      .hamburger { display: flex; }
       .nav-links {
         position: fixed;
         inset: 0;
-        background: rgba(245, 240, 233, 0.95);
+        background: #fff;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 2.5rem;
-        transform: translateY(-100%);
-        transition: transform .5s ease;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+        z-index: 1000;
       }
+      .nav-links.open { transform: translateX(0); }
+      .nav-links a { color: var(--text-main); font-size: 1.2rem; }
 
-      .nav-links a {
-        color: #333;
-        font-size: 1.1rem;
-      }
-
-      .nav-links.open {
-        transform: translateY(0);
-      }
-
-      .hamburger {
-        display: flex;
-      }
+      /* Animación del botón hamburguesa */
+      .nav-links.open ~ .hamburger span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); background: #333; }
+      .nav-links.open ~ .hamburger span:nth-child(2) { opacity: 0; }
+      .nav-links.open ~ .hamburger span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); background: #333; }
     }
 
-    /* Animations */
-    @keyframes fadeIn {
-      to { opacity: 1; }
+    @media (max-width: 600px) {
+      .intro-section { margin-top: -40px; }
+      .timeline-section h2 { font-size: 2.2rem; }
+      .photos-extra img { height: 250px; }
     }
-    @keyframes slideUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slideDown {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .wedding-map {
-  text-align: center;
-  background: linear-gradient(135deg, var(--secondary), #fff);
-  border-radius: 2rem;
-  padding: 3rem 2rem;
-  margin-top: 3rem;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-  opacity: 0;
-  transform: translateY(30px);
-  animation: slideUp 1s forwards 0.5s;
-}
 
-.wedding-map h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.wedding-map p {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 2rem;
-}
-
-.map-container {
-  width: 100%;
-  border-radius: 1.5rem;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-.map-link {
-  display: inline-block;
-  margin-bottom: 1rem;
-  padding: 0.8rem 2rem;
-  border-radius: 3rem;
-  background: var(--primary);
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-  letter-spacing: 1px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.map-link:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-.map-address {
-  font-size: 1rem;
-  color: #555;
-  margin-top: 0;
-}
-.confirmation {
-  text-align: center;
-  background: linear-gradient(135deg, #d9f5e5, #ffffff);
-  border-radius: 2rem;
-  padding: 4rem 2rem;
-  margin: 3rem auto;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-  opacity: 0;
-  transform: translateY(30px);
-  animation: slideUp 1s forwards 0.5s;
-}
-
-.confirmation h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.confirmation p {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 2rem;
-}
-
-.confirmation-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.confirm-btn {
-  display: inline-block;
-  padding: 1rem 2.5rem;
-  border-radius: 3rem;
-  text-decoration: none;
-  font-weight: 500;
-  letter-spacing: 1px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  color: #fff;
-  font-size: 1rem;
-  min-width: 250px;
-}
-
-.confirm-btn.novio {
-  background: #c6a87d; /* color principal */
-}
-
-.confirm-btn.novia {
-  background: #e8a87d; /* color secundario para diferenciar */
-}
-
-.confirm-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-.confirmation .note {
-  margin-top: 1.5rem;
-  font-size: 0.95rem;
-  color: #777;
-}
-
-header {
-  position: relative;
-  min-height: 90vh;
-  background: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
-              url('../fotografias/portada.png') center 75%/cover no-repeat;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: #fff;
-  padding: 2rem;
-}
-
-.header-content h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  margin-bottom: 0.5rem;
-  text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
-}
-
-.header-content .subtitle {
-  font-size: 1.2rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  opacity: 0.9;
-  margin-bottom: 1.5rem;
-  text-shadow: 1px 1px 8px rgba(0,0,0,0.6);
-}
-
-.header-content .wedding-date {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.5rem, 3vw, 2rem); /* tamaño notable pero elegante */
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: #fff;
-  text-shadow: 2px 2px 12px rgba(0,0,0,0.75); /* resalta sobre la imagen */
-  margin-top: 0.5rem;
-}
+    /* ANIMACIONES */
+    @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { to { opacity: 1; } }
 
   </style>
 </head>
@@ -550,151 +489,158 @@ header {
   </div>
 </header>
 
-
-
-<section>
-  <div class="card">
-    <div class="story-grid">
-      <div>
-        <h2>Cómo empezó todo</h2>
-        <p>
-          Lo nuestro comenzó de una forma sencilla, sin imaginar que ese primer encuentro
-          marcaría el inicio de una historia que hoy celebramos con quienes más queremos.
-        </p>
+<section class="intro-section" id="historia">
+  <div class="container">
+    <div class="main-card">
+      <div class="story-grid">
+        <div class="story-content">
+          <h2>Cómo empezó todo</h2>
+          <p>
+            Lo nuestro comenzó de una forma sencilla, sin imaginar que ese primer encuentro
+            marcaría el inicio de una historia que hoy celebramos con quienes más queremos.
+          </p>
+        </div>
+        <div class="story-image">
+          <img src="../fotografias/rodillas.jpg" alt="Primeros momentos" loading="lazy" />
+        </div>
       </div>
-      <img src="../fotografias/rodillas.jpg" alt="Primeros momentos" />
+
+      <div class="info-grid">
+        
+        <div class="info-card" id="ubicacion">
+          <h2>Ubicación</h2>
+          <p>¡Ven a celebrar con nosotros! Aquí puedes ver cómo llegar al lugar del evento:</p>
+          <a href="https://maps.app.goo.gl/r29eTLoBm3Tur2Cs7" target="_blank" class="btn btn-secondary">
+            Ver en Google Maps
+          </a>
+          <p class="map-address">I ETAPA, Nueva Toledo 208, Cieneguilla 15593</p>
+        </div>
+
+        <div class="info-card" id="confirmacion">
+          <h2>Confirmar Asistencia</h2>
+          <p>Por favor confirma antes del <strong>12 de marzo</strong> (3 semanas antes de la boda):</p>
+          <div class="confirmation-buttons">
+            <a href="https://wa.link/ku81ht" target="_blank" class="btn btn-primary">
+              Confirmar con Carlos
+            </a>
+            <a href="https://wa.link/7mxnrw" target="_blank" class="btn btn-primary">
+              Confirmar con Jimena
+            </a>
+          </div>
+        </div>
+
+      </div>
     </div>
-  </section>
-<section id="ubicacion" class="wedding-map">
-  <h2>Ubicación de la Boda</h2>
-  <p>¡Ven a celebrar con nosotros! Aquí puedes ver cómo llegar al lugar del evento:</p>
-
-  <!-- Botón para abrir Google Maps -->
-  <a href="https://maps.app.goo.gl/r29eTLoBm3Tur2Cs7" target="_blank" class="map-link">
-    Ver en Google Maps
-  </a>
-
-  <!-- Dirección escrita -->
-  <p class="map-address">I ETAPA, Nueva Toledo 208, Cieneguilla 15593</p>
-</section>
-<section id="confirmacion" class="confirmation">
-  <h2>Confirma tu asistencia</h2>
-  <p>Por favor confirma tu asistencia antes del <strong>12 de marzo</strong>, 3 semanas antes de nuestra boda, contactando directamente con:</p>
-
-  <div class="confirmation-buttons">
-    <a href="https://wa.link/ku81ht" target="_blank" class="confirm-btn novio">
-      Confirmar con Carlos (Novio)
-    </a>
-    <a href="https://wa.link/7mxnrw" target="_blank" class="confirm-btn novia">
-      Confirmar con Jimena (Novia)
-    </a>
   </div>
-
-  <p class="note">¡Esperamos celebrar este día tan especial contigo!</p>
 </section>
 
-    <section class="timeline-section" id="historia">
-      <h2>Nuestra historia</h2>
-      <div class="timeline">
+<section class="timeline-section">
+  <div class="container">
+    <h2>Nuestra historia</h2>
+    <div class="timeline-grid">
 
-        <!-- Timeline items -->
-        <div class="timeline-item">
-          <div class="timeline-icon">
-            <img src="../fotografias/temploicono.png" alt="Encuentro">
-          </div>
-          <span class="timeline-date">Abril 2023</span>
-          <h3>Un encuentro inesperado</h3>
-          <p>Lo que parecía casual se convirtió en el inicio de todo.</p>
+      <div class="timeline-card">
+        <div class="timeline-icon">
+          <img src="../fotografias/temploicono.png" alt="Encuentro">
         </div>
-
-        <div class="timeline-item">
-          <div class="timeline-icon">
-            <img src="../fotografias/tupper.png" alt="Tapper">
-          </div>
-          <span class="timeline-date">Julio 2023</span>
-          <h3>Un tupper nos unió</h3>
-          <p>Entre risas, comida y complicidad, algo empezó a crecer.</p>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-icon">
-            <img src="../fotografias/baile.png" alt="Baile">
-          </div>
-          <span class="timeline-date">Octubre 2023</span>
-          <h3>El primer baile</h3>
-          <p>Sin coreografía, pero con el corazón sincronizado.</p>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-icon">
-            <img src="../fotografias/limpieza.png" alt="Limpieza">
-          </div>
-          <span class="timeline-date">Octubre 2023</span>
-          <h3>Limpieza juntos</h3>
-          <p>Aprendimos que en equipo todo es más fácil.</p>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-icon">
-            <img src="../fotografias/caminata.png" alt="Caminata">
-          </div>
-          <span class="timeline-date">Diciembre 2023</span>
-          <h3>Caminata a casa</h3>
-          <p>Las mejores conversaciones siempre fueron caminando.</p>
-        </div>
-
-        <div class="timeline-item highlight">
-          <div class="timeline-icon">
-            <img src="../fotografias/parque.png" alt="Pedida">
-          </div>
-          <span class="timeline-date">6 dic 2023</span>
-          <h3>Una pedida especial</h3>
-          <p>Un momento que guardaremos para siempre.</p>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-icon">
-            <img src="../fotografias/puertas.png" alt="Puertas">
-          </div>
-          <span class="timeline-date">Diciembre 2023</span>
-          <h3>Puertas abiertas</h3>
-          <p>Una visita especial a un lugar sagrado.</p>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-icon">
-            <img src="../fotografias/corazon.png" alt="Amor">
-          </div>
-          <span class="timeline-date">14 feb 2024</span>
-          <h3>Un cita especial</h3>
-          <p>Cada día más fuertes, más unidos.</p>
-        </div>
-
-        <div class="timeline-item highlight">
-          <div class="timeline-icon">
-            <img src="../fotografias/anillo.png" alt="Anillo">
-          </div>
-          <span class="timeline-date">21 dic 2025</span>
-          <h3>Una pedida nerviosa</h3>
-          <p>Con nervios, emoción y un sí para siempre.</p>
-        </div>
-
+        <span class="timeline-date">Abril 2023</span>
+        <h3>Un encuentro inesperado</h3>
+        <p>Lo que parecía casual se convirtió en el inicio de todo.</p>
       </div>
-    </section>
 
-    <section id="momentos" class="photos-extra">
-      <img src="../fotografias/beso1.jpg" alt="Foto pedida 1">
-      <img src="../fotografias/sorpresa.jpg" alt="Foto pedida 2">
-      <img src="../fotografias/manos1 (1).jpg" alt="Foto pedida 3">
-    </section>
+      <div class="timeline-card">
+        <div class="timeline-icon">
+          <img src="../fotografias/tupper.png" alt="Tapper">
+        </div>
+        <span class="timeline-date">Julio 2023</span>
+        <h3>Un tupper nos unió</h3>
+        <p>Entre risas, comida y complicidad, algo empezó a crecer.</p>
+      </div>
+
+      <div class="timeline-card">
+        <div class="timeline-icon">
+          <img src="../fotografias/baile.png" alt="Baile">
+        </div>
+        <span class="timeline-date">Octubre 2023</span>
+        <h3>El primer baile</h3>
+        <p>Sin coreografía, pero con el corazón sincronizado.</p>
+      </div>
+
+      <div class="timeline-card">
+        <div class="timeline-icon">
+          <img src="../fotografias/limpieza.png" alt="Limpieza">
+        </div>
+        <span class="timeline-date">Octubre 2023</span>
+        <h3>Limpieza juntos</h3>
+        <p>Aprendimos que en equipo todo es más fácil.</p>
+      </div>
+
+      <div class="timeline-card">
+        <div class="timeline-icon">
+          <img src="../fotografias/caminata.png" alt="Caminata">
+        </div>
+        <span class="timeline-date">Diciembre 2023</span>
+        <h3>Caminata a casa</h3>
+        <p>Las mejores conversaciones siempre fueron caminando.</p>
+      </div>
+
+      <div class="timeline-card highlight">
+        <div class="timeline-icon">
+          <img src="../fotografias/parque.png" alt="Pedida">
+        </div>
+        <span class="timeline-date">6 dic 2023</span>
+        <h3>Una pedida especial</h3>
+        <p>Un momento que guardaremos para siempre.</p>
+      </div>
+
+      <div class="timeline-card">
+        <div class="timeline-icon">
+          <img src="../fotografias/puertas.png" alt="Puertas">
+        </div>
+        <span class="timeline-date">Diciembre 2023</span>
+        <h3>Puertas abiertas</h3>
+        <p>Una visita especial a un lugar sagrado.</p>
+      </div>
+
+      <div class="timeline-card">
+        <div class="timeline-icon">
+          <img src="../fotografias/corazon.png" alt="Amor">
+        </div>
+        <span class="timeline-date">14 feb 2024</span>
+        <h3>Un cita especial</h3>
+        <p>Cada día más fuertes, más unidos.</p>
+      </div>
+
+      <div class="timeline-card highlight">
+        <div class="timeline-icon">
+          <img src="../fotografias/anillo.png" alt="Anillo">
+        </div>
+        <span class="timeline-date">21 dic 2025</span>
+        <h3>Una pedida nerviosa</h3>
+        <p>Con nervios, emoción y un sí para siempre.</p>
+      </div>
+
+    </div>
   </div>
 </section>
 
-<section>
-  <div class="cta">
-    <h2>Lista de regalos</h2>
-    <p>Si desean acompañarnos con un detalle, hemos preparado un espacio especial.</p>
-    <a href="listaderegalos.html">Ver lista de regalos</a>
+<section id="momentos">
+  <div class="container">
+    <div class="photos-extra">
+      <img src="../fotografias/beso1.jpg" alt="Foto pedida 1" loading="lazy">
+      <img src="../fotografias/sorpresa.jpg" alt="Foto pedida 2" loading="lazy">
+      <img src="../fotografias/manos1 (1).jpg" alt="Foto pedida 3" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box">
+      <h2>Lista de regalos</h2>
+      <p>Si desean acompañarnos con un detalle, hemos preparado un espacio especial.</p>
+      <a href="listaderegalos.html" class="btn btn-primary">Ver lista de regalos</a>
+    </div>
   </div>
 </section>
 
@@ -703,9 +649,11 @@ header {
 </footer>
 
 <script>
+  // Menú Hamburguesa
   const hamburger = document.querySelector('.hamburger');
   const navLinks = document.querySelector('.nav-links');
   const links = document.querySelectorAll('.nav-links a');
+  const nav = document.querySelector('.nav');
 
   hamburger.addEventListener('click', () => {
     navLinks.classList.toggle('open');
@@ -717,20 +665,27 @@ header {
     });
   });
 
-  // Scroll animations
-  const timelineItems = document.querySelectorAll('.timeline-item');
-  const photosExtra = document.querySelector('.photos-extra');
+  // Cambiar estilo del nav al hacer scroll
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
 
+  // Animaciones al hacer scroll (Intersection Observer)
+  const sections = document.querySelectorAll('section');
+  
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if(entry.isIntersecting){
         entry.target.classList.add('visible');
       }
     });
-  }, {threshold: 0.2});
+  }, { threshold: 0.1 });
 
-  timelineItems.forEach(item => observer.observe(item));
-  observer.observe(photosExtra);
+  sections.forEach(section => observer.observe(section));
 </script>
 
 </body>
