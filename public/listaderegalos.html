@@ -119,23 +119,20 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      bottom: auto;
     }
 
-    /* ESTADO 2: ABAJO IZQUIERDA (Señala Monto) */
+    /* ESTADO 2: UN POCO MAS ARRIBA QUE EL MEDIO (Para ver la barra abajo) */
     .t-step-2 {
-      top: auto;
-      bottom: 10px;
-      left: 10px;
-      transform: translate(0, 0);
+      top: 35%; /* Sube al 35% de la pantalla */
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
-    /* ESTADO 3: MAS ARRIBA (Señala Botón/Instrucción) */
+    /* ESTADO 3: VUELVE AL CENTRO */
     .t-step-3 {
-      top: auto;
-      bottom: 180px; /* Lo subimos para no tapar el boton */
-      left: 10px;
-      transform: translate(0, 0);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     /* Elementos internos */
@@ -151,7 +148,7 @@
       background: white;
       border-radius: 20px 20px 20px 0;
       padding: 20px;
-      width: 260px; /* Ancho fijo para consistencia */
+      width: 260px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       position: relative;
       margin-bottom: 25px;
@@ -174,7 +171,6 @@
     @media (max-width: 450px) {
       .tuto-char-img { width: 110px; }
       .speech-bubble { width: 65%; font-size: 0.9rem; }
-      .t-step-3 { bottom: 150px; } /* Ajuste fino para moviles */
     }
 
     /* --- BARRAS Y MODALES --- */
@@ -328,16 +324,16 @@
 /* --- CONFIGURACION DE IMAGENES --- */
 const tutoImages = [
   "",
-  "../fotografias/sinfondo1.png", // Paso 1: Saludo
-  "../fotografias/sinfondo2.png", // Paso 2: Señala abajo
-  "../fotografias/sinfondo3.png"  // Paso 3: Celebración
+  "../fotografias/sinfondo1.png", // Paso 1
+  "../fotografias/sinfondo2.png", // Paso 2
+  "../fotografias/sinfondo3.png"  // Paso 3
 ];
 
 /* --- LOGICA DEL TUTORIAL --- */
 let step = 0;
 
 function initTutorial() {
-  if (!localStorage.getItem('tutorial_final_v3')) {
+  if (!localStorage.getItem('tutorial_final_v5')) {
     setTimeout(() => {
       document.getElementById('tutorialContainer').classList.add('active');
       document.body.classList.add('no-scroll');
@@ -358,7 +354,7 @@ function goStep(num) {
   // Actualizar imagen personaje
   img.src = tutoImages[step] || "../fotografias/sinfondo1.png";
   
-  // Limpiar clases de posicion
+  // Limpiar clases de posicion anteriores
   group.classList.remove('t-step-1', 't-step-2', 't-step-3');
   // Limpiar foco
   targetCard.classList.remove('highlight-active');
@@ -368,11 +364,11 @@ function goStep(num) {
     group.classList.add('t-step-1');
     
     title.innerText = "¡Bienvenidos!";
-    text.innerHTML = "Gracias por querer ser parte de nuestro sueño.<br>Te enseñamos rápido cómo funciona.";
+    text.innerHTML = "Gracias por acompañarnos.<br>Queremos enseñarte cómo funciona esta lista.";
     btn.innerText = "Empezar";
   } 
   else if (step === 2) {
-    // POSICION: ABAJO (Para ver monto)
+    // POSICION: ARRIBA DEL MEDIO (35%)
     group.classList.add('t-step-2');
 
     // Scroll y foco
@@ -380,16 +376,16 @@ function goStep(num) {
     setTimeout(() => targetCard.classList.add('highlight-active'), 600);
 
     title.innerText = "Aporta lo que desees";
-    text.innerHTML = "La barra muestra lo que falta. Puedes aportar <b>S/50, S/100</b> o lo que dicte tu corazón.";
+    text.innerHTML = "La barra muestra el progreso. Tú decides si regalar <b>S/50, S/100</b>... ¡Todo suma!";
     btn.innerText = "Siguiente";
   } 
   else if (step === 3) {
-    // POSICION: MAS ARRIBA (Para ver botones)
+    // POSICION: VUELVE AL CENTRO
     group.classList.add('t-step-3');
     targetCard.classList.add('highlight-active'); // Mantener foco
     
     title.innerText = "Todo es automático";
-    text.innerHTML = "Haz clic en <b>Regalar</b>, escanea el QR o copia la cuenta, transfiere y registra aquí el monto.";
+    text.innerHTML = "Haz clic en <b>Regalar</b>, usa el QR o copia la cuenta, transfiere y registra aquí el monto.";
     btn.innerText = "¡Listo!";
   } 
   else {
@@ -403,7 +399,7 @@ function closeTutorial() {
   document.getElementById('tutorialContainer').classList.remove('active');
   document.getElementById('card-focus').classList.remove('highlight-active');
   document.body.classList.remove('no-scroll');
-  localStorage.setItem('tutorial_final_v3', 'true');
+  localStorage.setItem('tutorial_final_v5', 'true');
 }
 
 /* --- LOGICA GENERAL --- */
