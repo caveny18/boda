@@ -16,13 +16,15 @@
       --text-main: #2c2c2c;
       --text-muted: #666666;
       --radius: 16px;
+      
       /* Capas Z-Index (Jerarquía) */
       --z-back: 1;
       --z-card: 10;
-      --z-overlay: 9998; /* Fondo oscuro */
-      --z-highlight: 9999; /* Elemento iluminado */
-      --z-tutorial-box: 10000; /* Caja de texto del tutorial */
-      --z-modal: 10001; /* Modales de pago */
+      --z-overlay: 9998;     /* El fondo negro del tutorial */
+      --z-highlight: 9999;   /* El elemento iluminado (Spotlight) */
+      --z-tutorial-box: 10000; /* La tarjeta de texto del tutorial */
+      --z-toast: 11000;      /* Mensaje de copiado */
+      --z-modal: 12000;      /* Formularios */
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -34,8 +36,8 @@
       padding-bottom: 50px;
     }
     
-    /* Bloquear scroll cuando el tutorial está activo */
-    body.no-scroll { overflow: hidden; }
+    /* Clase para bloquear scroll durante tutorial */
+    body.no-scroll { overflow: hidden; height: 100vh; }
 
     /* --- HEADER --- */
     .gift-header {
@@ -43,7 +45,7 @@
       text-align: center;
       padding: 80px 20px;
       color: white;
-      /* RUTA CORREGIDA */
+      /* FONDO HEADER */
       background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
                   url('../fotografias/pedida.jpg'); 
       background-size: cover;
@@ -58,15 +60,8 @@
       margin-bottom: 15px;
     }
 
-    .gift-header p {
-      max-width: 600px; margin: 0 auto 30px; font-size: 1.1rem;
-    }
-
-    .back-btn {
-      display: inline-block; text-decoration: none; color: white;
-      border: 2px solid white; padding: 10px 25px; border-radius: 50px;
-      background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
-    }
+    .gift-header p { max-width: 600px; margin: 0 auto 30px; font-size: 1.1rem; }
+    .back-btn { display: inline-block; text-decoration: none; color: white; border: 2px solid white; padding: 10px 25px; border-radius: 50px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px); }
 
     /* --- GRID --- */
     .gift-grid {
@@ -77,7 +72,6 @@
       margin: 0 auto;
       padding: 0 20px;
       position: relative;
-      z-index: var(--z-back);
     }
 
     .gift-card {
@@ -88,26 +82,23 @@
       text-align: center;
       display: flex; flex-direction: column;
       position: relative;
-      z-index: var(--z-card); /* Nivel normal */
       transition: transform 0.3s ease;
-      background-clip: padding-box;
+      background-clip: padding-box; /* Importante para bordes limpios */
     }
 
-    .gift-card img {
-      width: 100%; height: 180px; object-fit: contain; margin-bottom: 15px;
-    }
-
+    .gift-card img { width: 100%; height: 180px; object-fit: contain; margin-bottom: 15px; }
     .gift-card h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 8px; }
     .gift-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; flex-grow: 1; }
 
-    /* --- CLASE MAGICA PARA EL SPOTLIGHT --- */
-    /* Esta clase se agrega con JS al elemento que queremos resaltar */
+    /* --- ESTILO SPOTLIGHT (EL FOCO) --- */
     .highlight-active {
       z-index: var(--z-highlight) !important;
       position: relative !important;
       background: white !important;
-      box-shadow: 0 0 0 5px var(--primary), 0 0 50px rgba(0,0,0,0.5) !important;
-      pointer-events: none; /* Evita clicks en el botón durante el tutorial */
+      /* Efecto de brillo alrededor del elemento seleccionado */
+      box-shadow: 0 0 0 4px var(--primary), 0 0 100px rgba(0,0,0,0.9) !important;
+      transform: scale(1.02); /* Un pequeño zoom para resaltar */
+      pointer-events: none; /* Solo visual, no clickeable durante tuto */
     }
 
     /* --- OVERLAY OSCURO --- */
@@ -118,58 +109,57 @@
       z-index: var(--z-overlay);
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s;
-      display: flex; /* Para centrar en PC */
+      transition: opacity 0.4s ease;
+      display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    #tutorialOverlay.is-visible {
-      opacity: 1;
-      visibility: visible;
-    }
+    #tutorialOverlay.is-visible { opacity: 1; visibility: visible; }
 
     /* --- CAJA DE TEXTO DEL TUTORIAL --- */
     .tutorial-box {
       background: white;
-      padding: 30px 20px 20px;
+      padding: 25px 25px 20px;
       border-radius: 20px;
       width: 90%;
       max-width: 380px;
       text-align: center;
       position: relative;
       z-index: var(--z-tutorial-box);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      /* Animación de entrada */
+      animation: floatUp 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
     }
 
-    /* Posición en Movil: Abajo (Bottom Sheet) */
+    /* Imagen 3D Flotante (Sin círculo) */
+    .tuto-img-3d {
+      display: block;
+      width: 140px; /* Tamaño generoso */
+      height: auto;
+      margin: -90px auto 10px; /* Margen negativo para que 'vuele' fuera de la caja */
+      filter: drop-shadow(0 15px 15px rgba(0,0,0,0.3)); /* Sombra realista 3D */
+      object-fit: contain;
+    }
+
+    /* Posición en Movil: Abajo */
     @media (max-width: 768px) {
       .tutorial-box {
         position: fixed;
-        bottom: 30px;
+        bottom: 40px;
         left: 50%;
         transform: translateX(-50%);
+        width: 92%;
         margin: 0;
       }
     }
 
-    .tuto-img-circle {
-      width: 100px; height: 100px;
-      border-radius: 50%;
-      border: 4px solid white;
-      background: #eee;
-      object-fit: cover;
-      margin-top: -80px; /* Saca la foto hacia arriba */
-      margin-bottom: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    .tuto-title { color: var(--primary); font-family: 'Playfair Display'; font-size: 1.5rem; margin-bottom: 10px; }
+    .tuto-title { color: var(--primary); font-family: 'Playfair Display'; font-size: 1.5rem; margin-bottom: 8px; margin-top: 5px; }
     .tuto-desc { font-size: 0.95rem; color: #555; line-height: 1.5; margin-bottom: 20px; }
     
     .tuto-actions { display: flex; justify-content: center; gap: 10px; }
-    .btn-skip { background: transparent; border: 1px solid #ccc; color: #666; padding: 10px 20px; border-radius: 30px; font-size: 0.9rem; }
-    .btn-next { background: var(--primary); color: white; border: none; padding: 10px 30px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; }
+    .btn-skip { background: transparent; border: 1px solid #ccc; color: #777; padding: 10px 20px; border-radius: 30px; font-size: 0.9rem; cursor: pointer; }
+    .btn-next { background: var(--primary); color: white; border: none; padding: 10px 30px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 10px rgba(176,141,85,0.4); }
 
     /* --- BARRAS Y BOTONES --- */
     .progress-container { margin-bottom: 15px; }
@@ -177,22 +167,71 @@
     .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #d4af37); width: 0%; transition: width 1s; }
     .progress-text { font-size: 0.8rem; font-weight: 600; color: #8c6b3d; }
 
-    .btn-aportar { background: var(--primary); color: white; border: none; padding: 14px; width: 100%; border-radius: var(--radius); font-weight: 600; font-size: 1rem; cursor: pointer; }
+    .btn-aportar { background: var(--primary); color: white; border: none; padding: 14px; width: 100%; border-radius: var(--radius); font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+    .btn-aportar:active { transform: scale(0.98); }
 
-    /* --- MODALES --- */
-    .modal { display: none; position: fixed; z-index: var(--z-modal); left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+    /* --- MODAL PAGO CON BOTONES DE COPIAR --- */
+    .modal { display: none; position: fixed; z-index: var(--z-modal); left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
     .modal.show { display: flex; animation: fadeIn 0.3s; }
+    
     .modal-content { background: #fff; padding: 30px 25px; border-radius: 20px; width: 100%; max-width: 450px; position: relative; }
-    .close-btn { position: absolute; top: 15px; right: 15px; width: 30px; height: 30px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; }
+    .close-btn { position: absolute; top: 15px; right: 15px; width: 32px; height: 32px; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-size: 18px; color: #555; }
     
-    /* Helpers */
-    .qr-code { display: block; margin: 10px auto; max-width: 150px; }
+    /* Layout de cuentas bancarias */
+    .bank-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #eee;
+    }
+    .bank-info { display: flex; flex-direction: column; text-align: left; }
+    .bank-label { font-weight: 700; color: var(--text-main); font-size: 0.9rem; }
+    .bank-num { font-family: monospace; font-size: 0.95rem; color: #555; margin-top: 2px; }
+    
+    .btn-copy {
+      background: white;
+      border: 1px solid #ddd;
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: all 0.2s;
+    }
+    .btn-copy:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
     .form-group { margin-bottom: 15px; text-align: left; }
-    input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-top: 5px; }
+    input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-top: 5px; font-size: 1rem; }
     
-    @keyframes fadeIn { from {opacity:0} to {opacity:1} }
-    #toast { visibility: hidden; background: #333; color: #fff; padding: 12px 24px; border-radius: 30px; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 11000; }
-    #toast.show { visibility: visible; }
+    /* --- TOAST (Notificación de copiado) --- */
+    #toast {
+      visibility: hidden;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 50px;
+      padding: 12px 25px;
+      position: fixed;
+      z-index: var(--z-toast);
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+      font-size: 14px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    #toast.show { visibility: visible; animation: fadeinup 0.3s, fadeout 0.5s 2.5s; }
+
+    @keyframes floatUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeinup { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+    @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
   </style>
 </head>
 
@@ -200,7 +239,7 @@
 
 <div id="tutorialOverlay">
   <div class="tutorial-box">
-    <img id="tutoImg" src="../fotografias/novios1.png" class="tuto-img-circle" alt="Tutorial">
+    <img id="tutoImg" src="../fotografias/sinfondo1.png" class="tuto-img-3d" alt="Tutorial">
     
     <h3 id="tutoTitle" class="tuto-title">Bienvenidos</h3>
     <p id="tutoText" class="tuto-desc">Texto del paso</p>
@@ -211,6 +250,7 @@
     </div>
   </div>
 </div>
+
 <header class="gift-header">
   <div class="header-content">
     <h1>Lista de Regalos</h1>
@@ -220,7 +260,7 @@
 </header>
 
 <section class="gift-grid">
-  <div class="gift-card" id="card-refri">
+  <div class="gift-card" id="card-focus">
     <img src="../fotografias/refrigeradora.png" alt="Refrigeradora" onerror="this.src='https://via.placeholder.com/300?text=Refrigeradora'">
     <h3>Refrigeradora</h3>
     <p>Para conservar nuestros momentos.</p>
@@ -258,53 +298,90 @@
   <div class="modal-content">
     <div class="close-btn" onclick="closeModal('giftModal')">✕</div>
     <h2 id="modalTitle" style="color:var(--primary); margin-bottom:15px; font-family:'Playfair Display'">Regalar</h2>
+    
     <form onsubmit="confirmGift(event)">
-      <div class="form-group"><input type="text" id="nombre" placeholder="Tu nombre" required></div>
-      <div class="form-group" style="display:flex; gap:10px;">
-        <select id="moneda" style="flex:1"><option value="PEN">S/ (Soles)</option><option value="USD">$ (Dólares)</option></select>
-        <input type="number" id="monto" placeholder="Monto" style="flex:2" required>
-      </div>
+      <div class="form-group"><input type="text" id="nombre" placeholder="Tu nombre" required autocomplete="off"></div>
       
-      <div style="background:#f9f9f9; padding:15px; border-radius:10px; margin:15px 0; text-align:left; font-size:0.9rem;">
-         <p><strong>Yape:</strong> 960 778 888 <small>(Carlos Ruiz)</small></p>
-         <img src="../fotografias/yape.jpg" class="qr-code" alt="QR">
-         <p style="margin-top:10px;"><strong>BCP:</strong> 191-99927056-0-17</p>
-         <p><strong>Interbank:</strong> 898-34897420-65</p>
+      <div style="margin: 15px 0;">
+        <p style="font-size: 0.9rem; margin-bottom: 10px; color:#555;">Copia el número y transfiere desde tu App:</p>
+        
+        <div class="bank-row">
+          <div class="bank-info">
+            <span class="bank-label">Yape / Plin</span>
+            <span class="bank-num">960-778-888</span>
+          </div>
+          <button type="button" class="btn-copy" onclick="copyText('960778888')">Copiar</button>
+        </div>
+
+        <div class="bank-row">
+          <div class="bank-info">
+            <span class="bank-label">BCP Soles</span>
+            <span class="bank-num">191-99927056-0-17</span>
+          </div>
+          <button type="button" class="btn-copy" onclick="copyText('19199927056017')">Copiar</button>
+        </div>
+
+         <div class="bank-row">
+          <div class="bank-info">
+            <span class="bank-label">Interbank</span>
+            <span class="bank-num">898-34897420-65</span>
+          </div>
+          <button type="button" class="btn-copy" onclick="copyText('8983489742065')">Copiar</button>
+        </div>
       </div>
 
-      <button type="submit" class="btn-aportar">¡Listo, enviado!</button>
+      <div class="form-group" style="display:flex; gap:10px;">
+        <select id="moneda" style="flex:1"><option value="PEN">S/ (Soles)</option><option value="USD">$ (Dólares)</option></select>
+        <input type="number" id="monto" placeholder="Monto Transferido" style="flex:2" required>
+      </div>
+
+      <button type="submit" class="btn-aportar">Registrar Regalo</button>
     </form>
   </div>
 </div>
 
 <div class="modal" id="confirmModal">
   <div class="modal-content" style="text-align:center;">
-    <h2 style="color:#27ae60;">¡Gracias!</h2>
+    <h2 style="color:#27ae60;">¡Gracias Infinitas!</h2>
     <p id="msgConfirm" style="margin:20px 0;">Tu aporte fue registrado.</p>
     <button class="btn-aportar" onclick="closeModal('confirmModal')">Cerrar</button>
   </div>
 </div>
 
+<div id="toast">¡Copiado al portapapeles!</div>
+
 <script>
-/* --- CONFIGURACIÓN ESTRICTA DE RUTAS --- */
-const images = [
-  "", // step 0 vacio
-  "../fotografias/novios1.png", // Paso 1: Bienvenida
-  "../fotografias/novios2.png", // Paso 2: Barra / Monto
-  "../fotografias/novios3.png"  // Paso 3: Pago
+/* --- IMÁGENES DEL TUTORIAL --- */
+// Asegúrate de que los archivos existan en la carpeta fotografias
+const tutoImages = [
+  "",
+  "../fotografias/sinfondo1.png", // Paso 1
+  "../fotografias/sinfondo2.png", // Paso 2
+  "../fotografias/sinfondo3.png"  // Paso 3
 ];
 
-/* --- LÓGICA DEL TUTORIAL --- */
+/* --- FUNCIONALIDAD DE COPIAR --- */
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = document.getElementById("toast");
+    toast.className = "show";
+    setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
+  }).catch(err => {
+    console.error('Error al copiar: ', err);
+  });
+}
+
+/* --- LOGICA DEL TUTORIAL (Spotlight) --- */
 let step = 0;
 
 function initTutorial() {
-  // Verificamos si ya lo vio (puedes borrar esta linea para pruebas)
-  if (!localStorage.getItem('tutorial_completed_v5')) {
+  // Para probar siempre, quita el if de localStorage temporalmente
+  if (!localStorage.getItem('tutorial_done_vFinal')) {
     setTimeout(() => {
       document.getElementById('tutorialOverlay').classList.add('is-visible');
-      document.body.classList.add('no-scroll'); // Bloqueamos scroll manual
+      document.body.classList.add('no-scroll');
       goStep(1);
-    }, 1000);
+    }, 1200);
   }
 }
 
@@ -314,39 +391,36 @@ function goStep(num) {
   const text = document.getElementById('tutoText');
   const img = document.getElementById('tutoImg');
   const btn = document.getElementById('btnNextStep');
-  const targetCard = document.getElementById('card-refri');
+  const targetCard = document.getElementById('card-focus');
 
-  // Cargar imagen con ruta segura
-  img.src = images[step] || "../fotografias/pedida.jpg";
+  // Cargar imagen
+  img.src = tutoImages[step] || "../fotografias/pedida.jpg";
   
-  // Limpiar estados previos
+  // Limpiar foco anterior
   targetCard.classList.remove('highlight-active');
 
   if (step === 1) {
     title.innerText = "¡Bienvenidos!";
-    text.innerHTML = "Gracias por acompañarnos. <br>Queremos mostrarte brevemente cómo funciona nuestra lista.";
-    btn.innerText = "Comenzar";
+    text.innerHTML = "Gracias por querer ser parte de nuestro sueño.<br>Te enseñamos rápido cómo funciona.";
+    btn.innerText = "Empezar";
   } 
   else if (step === 2) {
-    // SCROLL AUTOMÁTICO HACIA EL ELEMENTO
+    // Scroll y Foco
     targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    
-    // Esperamos un poco que termine el scroll para iluminarlo
     setTimeout(() => {
-      targetCard.classList.add('highlight-active');
+      targetCard.classList.add('highlight-active'); // AQUI SE ACTIVA EL FOCO
     }, 500);
 
-    title.innerText = "Aporte Flexible";
-    text.innerHTML = "Puedes aportar <b>S/50, S/100</b> o lo que desees. <br>¡Todo suma para llegar a la meta!";
+    title.innerText = "Aporta lo que desees";
+    text.innerHTML = "La barra muestra cuánto falta. Puedes aportar <b>S/50, S/100</b> o lo que dicte tu corazón.";
     btn.innerText = "Siguiente";
   } 
   else if (step === 3) {
-    // Mantenemos iluminado
-    targetCard.classList.add('highlight-active'); 
+    targetCard.classList.add('highlight-active'); // Mantener foco
     
-    title.innerText = "Fácil de enviar";
-    text.innerHTML = "Al dar clic en 'Regalar', verás nuestro <b>QR y cuentas</b>. Haces la transferencia y registras el monto aquí.";
-    btn.innerText = "Entendido";
+    title.innerText = "Todo es automático";
+    text.innerHTML = "Haz clic en <b>Regalar</b>, copia el número de Yape/Banco, transfiere y registra el monto aquí.";
+    btn.innerText = "¡Entendido!";
   } 
   else {
     closeTutorial();
@@ -357,12 +431,12 @@ function nextStep() { goStep(step + 1); }
 
 function closeTutorial() {
   document.getElementById('tutorialOverlay').classList.remove('is-visible');
-  document.getElementById('card-refri').classList.remove('highlight-active');
-  document.body.classList.remove('no-scroll'); // Devolvemos el scroll
-  localStorage.setItem('tutorial_completed_v5', 'true');
+  document.getElementById('card-focus').classList.remove('highlight-active');
+  document.body.classList.remove('no-scroll');
+  localStorage.setItem('tutorial_done_vFinal', 'true');
 }
 
-/* --- LOGICA GENERAL DE LA LISTA --- */
+/* --- LOGICA GENERAL --- */
 const TIPO_CAMBIO = 3.4;
 let regaloActual = "";
 let acumulados = JSON.parse(localStorage.getItem('regalos_db')) || {};
@@ -370,7 +444,7 @@ const metas = { "Refrigeradora": 2000, "Cocina": 1500, "TV": 1800 };
 
 document.addEventListener('DOMContentLoaded', () => {
   for (let k in metas) updateUI(k);
-  initTutorial(); // Arrancar tutorial
+  initTutorial();
 });
 
 function updateUI(item) {
@@ -378,7 +452,7 @@ function updateUI(item) {
   const val = acumulados[item] || 0;
   const pct = Math.min((val / metas[item])*100, 100);
   document.getElementById("fill-"+item).style.width = pct + "%";
-  document.getElementById("text-"+item).innerText = `S/ ${val} de S/ ${metas[item]}`;
+  document.getElementById("text-"+item).innerText = `S/ ${val.toFixed(2)} de S/ ${metas[item]}`;
 }
 
 function openModal(item, meta) {
@@ -400,7 +474,7 @@ function confirmGift(e) {
   
   updateUI(regaloActual);
   closeModal('giftModal');
-  document.getElementById('msgConfirm').innerText = `Gracias ${document.getElementById('nombre').value}, recibimos tu cariño.`;
+  document.getElementById('msgConfirm').innerText = `Gracias ${document.getElementById('nombre').value}, hemos recibido tu cariño.`;
   document.getElementById('confirmModal').classList.add('show');
 }
 </script>
