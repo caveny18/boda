@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Lista de Regalos | Jimena & Carlos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
   
@@ -19,7 +19,8 @@
       --success: #27ae60;
       --radius: 16px;
       --shadow: 0 10px 30px rgba(0,0,0,0.08);
-      --overlay-z: 5000;
+      --z-tutorial: 9999;
+      --z-modal: 5000;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -30,16 +31,18 @@
       color: var(--text-main);
       padding-bottom: 50px;
     }
+    
+    /* Clase para bloquear scroll durante tutorial */
+    body.tutorial-active { overflow: hidden; }
 
     /* --- HEADER --- */
-    /* Nota: He puesto la ruta estándar 'fotografias/playa.jpg' */
     .gift-header {
       position: relative;
       text-align: center;
       padding: 80px 20px;
       color: white;
       background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-                  url('fotografias/playa.jpg'); 
+                  url('fotografias/pedida.jpg'); 
       background-size: cover;
       background-position: center;
       border-radius: 0 0 30px 30px;
@@ -73,7 +76,6 @@
       background: rgba(255,255,255,0.1);
       backdrop-filter: blur(5px);
     }
-
     .back-btn:hover { background: white; color: var(--text-main); }
 
     /* --- GRID DE REGALOS --- */
@@ -95,7 +97,16 @@
       transition: transform 0.3s ease;
       display: flex;
       flex-direction: column;
-      position: relative; /* Necesario para el spotlight */
+      position: relative;
+    }
+
+    /* ESTILO ESPECIAL CUANDO EL TUTORIAL LO ENFOCA */
+    .gift-card.spotlight-active {
+      z-index: 10000; /* Por encima de la capa oscura */
+      position: relative;
+      background: white;
+      box-shadow: 0 0 0 1000vh rgba(0, 0, 0, 0.85); /* Truco para oscurecer todo lo demás */
+      pointer-events: none; /* No permitir click en el botón real durante tutorial */
     }
 
     .gift-card img {
@@ -158,178 +169,125 @@
     }
     .btn-aportar:active { transform: scale(0.98); }
 
-    /* --- MODALES DE PAGO --- */
+    /* --- TUTORIAL / ONBOARDING (ESTILO FINAL) --- */
+    .tutorial-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      z-index: var(--z-tutorial);
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .tutorial-overlay.active { display: flex; animation: fadeOnly 0.3s; }
+
+    /* Caja de Control del Tutorial (Fija abajo en móvil, centro en PC) */
+    .tutorial-control-box {
+      position: fixed;
+      background: white;
+      padding: 25px 20px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      z-index: 10001; /* Encima del spotlight */
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      animation: slideUpShort 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Posición escritorio */
+    @media (min-width: 768px) {
+      .tutorial-control-box { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    }
+    /* Posición móvil (Abajo para no tapar el regalo enfocado si está arriba) */
+    @media (max-width: 767px) {
+      .tutorial-control-box { bottom: 30px; left: 50%; transform: translateX(-50%); }
+    }
+
+    .tuto-img {
+      width: 100px; 
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: -60px auto 15px; /* Sube la imagen para efecto "pop" */
+      border: 4px solid white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      background: #eee;
+    }
+
+    .tuto-title { font-family: 'Playfair Display'; color: var(--primary); font-size: 1.4rem; margin-bottom: 10px; }
+    .tuto-text { font-size: 0.95rem; color: #555; line-height: 1.5; margin-bottom: 20px; }
+    
+    .tuto-btns { display: flex; gap: 10px; justify-content: center; }
+    .btn-skip { background: transparent; border: 1px solid #ddd; color: #777; padding: 10px 20px; border-radius: 50px; font-size: 0.9rem; cursor: pointer; }
+    .btn-next { background: var(--primary); color: white; border: none; padding: 10px 30px; border-radius: 50px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 10px rgba(176,141,85,0.3); }
+
+    /* --- MODALES FORMULARIO --- */
     .modal {
       display: none;
       position: fixed;
-      z-index: 2000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
+      z-index: var(--z-modal);
+      left: 0; top: 0; width: 100%; height: 100%;
       background-color: rgba(0,0,0,0.7);
       backdrop-filter: blur(4px);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      overflow-y: auto;
+      align-items: center; justify-content: center;
+      padding: 20px; overflow-y: auto;
     }
-
-    .modal.show { display: flex; animation: fadeIn 0.3s; }
+    .modal.show { display: flex; animation: fadeOnly 0.3s; }
 
     .modal-content {
       background-color: #fff;
       padding: 30px 25px;
       border-radius: 20px;
-      width: 100%;
-      max-width: 480px;
-      position: relative;
+      width: 100%; max-width: 480px; position: relative;
       box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-      animation: slideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-      max-height: 90vh;
-      overflow-y: auto;
+      animation: slideUpShort 0.3s;
     }
 
     .close-btn {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      width: 36px;
-      height: 36px;
-      background: #f0f0f0;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 20px;
-      color: #555;
-      font-weight: bold;
-      transition: background 0.2s;
-      z-index: 10;
-    }
-    .close-btn:hover { background: #e0e0e0; color: #000; }
-
-    /* --- ESTILOS DEL TUTORIAL (ONBOARDING) --- */
-    .tutorial-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85); /* Fondo oscuro fuerte */
-      z-index: var(--overlay-z);
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      padding: 20px;
-      text-align: center;
+      position: absolute; top: 15px; right: 15px; width: 36px; height: 36px;
+      background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 20px; color: #555; font-weight: bold;
     }
 
-    .tutorial-overlay.active { display: flex; animation: fadeIn 0.5s; }
-
-    .tutorial-card {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      max-width: 350px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-      animation: slideUp 0.4s;
-      position: relative;
-      z-index: calc(var(--overlay-z) + 2);
-    }
-
-    .tutorial-img-container {
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 20px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 4px solid var(--primary);
-      animation: float 3s ease-in-out infinite; /* Animación flotante */
-    }
-
-    .tutorial-img-container img { width: 100%; height: 100%; object-fit: cover; }
-
-    .tutorial-title { font-family: 'Playfair Display'; color: var(--primary); font-size: 1.5rem; margin-bottom: 10px; }
-    .tutorial-text { font-size: 0.95rem; color: #555; line-height: 1.5; margin-bottom: 25px; }
-
-    .tutorial-buttons { display: flex; gap: 10px; justify-content: center; }
-    
-    .btn-skip { background: transparent; border: 1px solid #ccc; color: #666; padding: 10px 20px; border-radius: 50px; font-weight: 500; cursor: pointer; }
-    .btn-next { background: var(--primary); color: white; border: none; padding: 10px 25px; border-radius: 50px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 10px rgba(176,141,85,0.4); }
-
-    /* Clase para resaltar elementos durante el tutorial */
-    .highlight-element {
-      position: relative;
-      z-index: calc(var(--overlay-z) + 1);
-      background: white;
-      box-shadow: 0 0 0 10000px rgba(0,0,0,0.85) !important; /* Oscurece todo lo demás */
-      pointer-events: none; /* No permitir clicks reales durante el tutorial */
-    }
-    
-    /* Burbuja de dialogo flotante para pasos 2 y 3 */
-    .tutorial-bubble {
-      position: fixed;
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 320px;
-      z-index: calc(var(--overlay-z) + 2);
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-    
-    .tutorial-bubble::after { /* Triangulito */
-      content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-      border-width: 0 10px 10px 10px; border-style: solid; border-color: transparent transparent white transparent;
-    }
-
-    /* --- RESTO DE ESTILOS --- */
-    .qr-code { display: block; margin: 15px auto 5px; max-width: 180px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    /* Estilos Formulario */
+    .qr-code { display: block; margin: 15px auto 5px; max-width: 180px; border-radius: 12px; }
     .form-group { margin-bottom: 15px; text-align: left; }
-    input, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; font-size: 1rem; background: #fafafa; font-family: inherit; }
-    input:focus, select:focus { border-color: var(--primary); background: #fff; }
-    .payment-info { background: #f8f9fa; padding: 15px; border-radius: 12px; margin: 20px 0; text-align: left; font-size: 0.9rem; border: 1px solid #eee; }
+    input, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; font-size: 1rem; background: #fafafa; }
+    .payment-info { background: #f8f9fa; padding: 15px; border-radius: 12px; margin: 20px 0; text-align: left; border: 1px solid #eee; }
     .bank-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #eee; }
     .bank-item:last-child { border-bottom: none; }
-    .bank-details strong { display: block; color: var(--text-main); font-size: 0.95rem; margin-bottom: 4px; }
-    .bank-details span { font-size: 0.9rem; color: #555; font-family: monospace; letter-spacing: 0.5px; display: block; }
+    .bank-details strong { display: block; color: var(--text-main); font-size: 0.95rem; }
+    .bank-details span { font-size: 0.9rem; color: #555; font-family: monospace; display: block; }
     .bank-details small { display: block; color: #888; font-size: 0.8rem; margin-top: 2px; }
-    .copy-btn { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 8px 12px; font-size: 0.8rem; color: var(--primary); font-weight: 600; cursor: pointer; margin-left: 10px; flex-shrink: 0; align-self: center; }
-    
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+    .copy-btn { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 8px 12px; font-size: 0.8rem; color: var(--primary); font-weight: 600; cursor: pointer; margin-left: 10px; }
 
-    #toast { visibility: hidden; min-width: 200px; background-color: rgba(44, 44, 44, 0.95); color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 3000; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-    #toast.show { visibility: visible; animation: fadein 0.3s, fadeout 0.3s 2.5s; }
+    /* Animaciones */
+    @keyframes fadeOnly { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUpShort { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
+    #toast { visibility: hidden; min-width: 200px; background-color: rgba(44, 44, 44, 0.95); color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 6000; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 14px; }
+    #toast.show { visibility: visible; animation: fadeOnly 0.3s, fadeOnly 0.3s 2.5s reverse forwards; }
   </style>
 </head>
 
 <body>
 
 <div id="tutorialOverlay" class="tutorial-overlay">
-  <div id="step1" class="tutorial-card">
-    <div class="tutorial-img-container">
-      <img src="fotografias/pedida.jpg" alt="Nosotros">
-    </div>
-    <h3 class="tutorial-title">¡Bienvenidos a nuestra lista!</h3>
-    <p class="tutorial-text">
-      Gracias por el deseo de conocer nuestros regalos soñados. <br>
-      Queremos enseñarte brevemente cómo funciona para que sea súper fácil para ti.
-    </p>
-    <div class="tutorial-buttons">
+  <div class="tutorial-control-box">
+    <img id="tutoImg" src="fotografias/novios1.png" class="tuto-img" alt="Tutorial">
+    
+    <h3 id="tutoTitle" class="tuto-title">¡Bienvenidos!</h3>
+    <p id="tutoText" class="tuto-text">Gracias por querer ser parte de nuestro sueño.</p>
+    
+    <div class="tuto-btns">
       <button class="btn-skip" onclick="endTutorial()">Omitir</button>
-      <button class="btn-next" onclick="nextStep(2)">Comenzar</button>
+      <button class="btn-next" id="tutoBtnNext" onclick="nextStep()">Siguiente</button>
     </div>
-  </div>
-
-  <div id="tutorialBubble" class="tutorial-bubble" style="display: none;">
-    <p id="bubbleText" class="tutorial-text" style="margin-bottom: 15px; font-weight: 500;"></p>
-    <button class="btn-next" onclick="advanceTutorial()" id="bubbleBtn">Entendido</button>
   </div>
 </div>
+
 <header class="gift-header">
   <div class="header-content">
     <h1>Lista de Regalos</h1>
@@ -339,8 +297,7 @@
 </header>
 
 <section class="gift-grid">
-
-  <div class="gift-card" id="tutorialTarget">
+  <div class="gift-card" id="firstGift">
     <img src="fotografias/refrigeradora.png" alt="Refrigeradora" onerror="this.src='https://via.placeholder.com/300?text=Refrigeradora'">
     <h3>Refrigeradora</h3>
     <p>Para conservar nuestros momentos.</p>
@@ -383,7 +340,6 @@
     </div>
     <button class="btn-aportar" onclick="openModal('Viaje', 3000)">Regalar</button>
   </div>
-
 </section>
 
 <div class="modal" id="giftModal">
@@ -449,88 +405,99 @@
 <div id="toast">¡Copiado!</div>
 
 <script>
-// --- LOGICA DEL TUTORIAL ---
+// --- LOGICA DEL TUTORIAL MEJORADO ---
 let currentStep = 0;
+// Imágenes para cada paso
+const tutoImages = [
+  "", // índice 0 vacío
+  "fotografias/novios1.png", // Paso 1: Bienvenida
+  "fotografias/novios2.png", // Paso 2: Explicar monto
+  "fotografias/novios3.png"  // Paso 3: Explicar pago
+];
 
 function checkTutorial() {
-  // Verificamos si ya vio el tutorial antes
-  if (!localStorage.getItem('tutorial_seen_v1')) {
-    // Si no lo ha visto, iniciamos
+  if (!localStorage.getItem('tutorial_v3_seen')) {
     setTimeout(() => {
-      document.getElementById('tutorialOverlay').classList.add('active');
-    }, 1000); // Pequeña pausa al cargar la pagina
+      startTutorial();
+    }, 800);
   }
 }
 
-function nextStep(step) {
+function startTutorial() {
+  document.body.classList.add('tutorial-active'); // Bloquea scroll
+  document.getElementById('tutorialOverlay').classList.add('active');
+  renderStep(1);
+}
+
+function renderStep(step) {
   currentStep = step;
-  const overlay = document.getElementById('tutorialOverlay');
-  const step1 = document.getElementById('step1');
-  const bubble = document.getElementById('tutorialBubble');
-  const bubbleText = document.getElementById('bubbleText');
-  const bubbleBtn = document.getElementById('bubbleBtn');
-  const target = document.getElementById('tutorialTarget'); // Primera tarjeta
+  const title = document.getElementById('tutoTitle');
+  const text = document.getElementById('tutoText');
+  const img = document.getElementById('tutoImg');
+  const btn = document.getElementById('tutoBtnNext');
+  const firstGift = document.getElementById('firstGift');
 
-  if (step === 2) {
-    // Esconder bienvenida
-    step1.style.display = 'none';
+  // Actualizar Imagen (si falla carga una por defecto)
+  img.src = tutoImages[step] || 'fotografias/pedida.jpg';
+  img.onerror = function() { this.src = 'https://via.placeholder.com/100?text=Boda'; };
+
+  // Limpiar foco previo
+  firstGift.classList.remove('spotlight-active');
+
+  if (step === 1) {
+    title.innerText = "¡Bienvenidos!";
+    text.innerHTML = "Gracias por el deseo de conocer nuestros regalos soñados. <br>Queremos mostrarte cómo funciona en 2 pasos.";
+    btn.innerText = "Comenzar";
+  } 
+  else if (step === 2) {
+    // Scroll suave hacia el regalo
+    firstGift.scrollIntoView({ behavior: 'smooth', block: 'center' });
     
-    // Iluminar la tarjeta (Spotlight)
-    target.classList.add('highlight-element');
-    // Scroll suave hacia la tarjeta para asegurar que se vea
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Aplicar FOCO después de un pequeño delay para que el scroll termine
+    setTimeout(() => {
+      firstGift.classList.add('spotlight-active');
+    }, 400);
 
-    // Mostrar burbuja de texto
-    bubble.style.display = 'block';
-    // Posicionar burbuja cerca de la tarjeta (ajuste simple visual)
-    bubble.style.top = '50%';
-    bubble.style.left = '50%';
-    bubble.style.transform = 'translate(-50%, -50%)'; 
-    bubble.style.marginTop = '140px'; // Bajarla un poco para que no tape la tarjeta
-
-    bubbleText.innerHTML = "¡Aquí está la magia! ✨ <br> Puedes aportar <b>S/ 50, S/ 100 o el monto que tú desees</b>. La barra irá avanzando hasta que cumplamos la meta juntos.";
-    bubbleBtn.innerText = "Siguiente";
-  } 
-  
+    title.innerText = "Cualquier monto ayuda";
+    text.innerHTML = "Mira la barra de progreso. <b>Puedes aportar S/50, S/100 o lo que desees.</b> <br>La barra avanzará hasta que lleguemos a la meta juntos.";
+    btn.innerText = "Siguiente";
+  }
   else if (step === 3) {
-    bubbleText.innerHTML = "Al dar clic en 'Regalar', verás nuestro <b>QR de Yape y cuentas</b>. <br><br> Cuando hayas hecho la transferencia, colocas el monto, le das a enviar ¡y listo!";
-    bubbleBtn.innerText = "¡Entendido!";
-  } 
-  
-  else if (step === 4) {
+    // Mantenemos el foco en la tarjeta porque ahí está el botón regalar
+    firstGift.classList.add('spotlight-active');
+    
+    title.innerText = "Fácil y Rápido";
+    text.innerHTML = "Al dar clic en 'Regalar', verás nuestro <b>QR de Yape y cuentas</b>. Realizas la transferencia, escribes el monto y listo.";
+    btn.innerText = "¡Entendido!";
+  }
+  else {
     endTutorial();
   }
 }
 
-function advanceTutorial() {
-  if (currentStep === 2) nextStep(3);
-  else if (currentStep === 3) nextStep(4);
+function nextStep() {
+  renderStep(currentStep + 1);
 }
 
 function endTutorial() {
   document.getElementById('tutorialOverlay').classList.remove('active');
-  document.getElementById('tutorialTarget').classList.remove('highlight-element');
-  // Guardar en memoria para no mostrar de nuevo
-  localStorage.setItem('tutorial_seen_v1', 'true');
+  document.getElementById('firstGift').classList.remove('spotlight-active');
+  document.body.classList.remove('tutorial-active'); // Reactiva scroll
+  localStorage.setItem('tutorial_v3_seen', 'true');
 }
 
 // --- CONFIGURACIÓN GENERAL ---
 const TIPO_CAMBIO = 3.4;
 let regaloActual = "";
-
 let acumulados = JSON.parse(localStorage.getItem('boda_regalos_data')) || {};
 const metas = { "Refrigeradora": 2000, "Cocina": 1500, "TV": 1800, "Viaje": 3000 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Iniciar datos
   for (let item in metas) updateUI(item);
-  // Iniciar Tutorial
   checkTutorial();
   
   window.onclick = function(event) {
-    if (event.target.classList.contains('modal')) {
-      event.target.classList.remove("show");
-    }
+    if (event.target.classList.contains('modal')) event.target.classList.remove("show");
   }
 });
 
@@ -552,9 +519,7 @@ function openModal(item, meta) {
   document.getElementById("giftModal").classList.add("show");
 }
 
-function closeModal(id) {
-  document.getElementById(id).classList.remove("show");
-}
+function closeModal(id) { document.getElementById(id).classList.remove("show"); }
 
 function copyText(text) {
   navigator.clipboard.writeText(text);
