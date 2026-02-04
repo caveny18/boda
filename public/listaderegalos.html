@@ -245,9 +245,9 @@
     <p>Para conservar nuestros alimentos y momentos.</p>
     <div class="progress-container">
       <div class="progress-bar"><div class="progress-fill" id="fill-Refrigeradora"></div></div>
-      <span class="progress-text" id="text-Refrigeradora">S/ 0 / S/ 2200</span>
+      <span class="progress-text" id="text-Refrigeradora">S/ 0 / S/ 1400</span>
     </div>
-    <button class="btn-aportar" onclick="openModal('Refrigeradora', 2200)">Regalar</button>
+    <button class="btn-aportar" onclick="openModal('Refrigeradora', 1400)">Regalar</button>
   </div>
 
   <div class="gift-card">
@@ -256,9 +256,9 @@
     <p>Donde nacerán nuestras mejores recetas.</p>
     <div class="progress-container">
       <div class="progress-bar"><div class="progress-fill" id="fill-Cocina"></div></div>
-      <span class="progress-text" id="text-Cocina">S/ 0 / S/ 1400</span>
+      <span class="progress-text" id="text-Cocina">S/ 0 / S/ 799</span>
     </div>
-    <button class="btn-aportar" onclick="openModal('Cocina', 1400)">Regalar</button>
+    <button class="btn-aportar" onclick="openModal('Cocina', 799)">Regalar</button>
   </div>
   
   <div class="gift-card">
@@ -278,20 +278,20 @@
     <p>Para soñar juntos con nuestro futuro.</p>
     <div class="progress-container">
       <div class="progress-bar"><div class="progress-fill" id="fill-Cama"></div></div>
-      <span class="progress-text" id="text-Cama">S/ 0 / S/ 2100</span>
+      <span class="progress-text" id="text-Cama">S/ 0 / S/ 1700</span>
     </div>
-    <button class="btn-aportar" onclick="openModal('Cama', 2100)">Regalar</button>
+    <button class="btn-aportar" onclick="openModal('Cama', 1700)">Regalar</button>
   </div>
 
   <div class="gift-card">
-    <img src="../fotografias/tv.png" alt="TV 55" onerror="this.src='https://via.placeholder.com/300?text=TV+Smart'">
-    <h3>TV Smart 55"</h3>
+    <img src="../fotografias/tv.png" alt="TV" onerror="this.src='https://via.placeholder.com/300?text=TV+Smart'">
+    <h3>TV Smart"</h3>
     <p>Para nuestras noches de cine y series.</p>
     <div class="progress-container">
       <div class="progress-bar"><div class="progress-fill" id="fill-TV"></div></div>
-      <span class="progress-text" id="text-TV">S/ 0 / S/ 1800</span>
+      <span class="progress-text" id="text-TV">S/ 0 / S/ 500</span>
     </div>
-    <button class="btn-aportar" onclick="openModal('TV', 1800)">Regalar</button>
+    <button class="btn-aportar" onclick="openModal('TV', 500)">Regalar</button>
   </div>
 
   <div class="gift-card">
@@ -511,11 +511,11 @@ function copyText(val) {
 const TIPO_CAMBIO = 3.4;
 let regaloActual = "";
 let acumulados = JSON.parse(localStorage.getItem('regalos_db')) || {};
-const metas = { "Refrigeradora": 2200, 
-  "Cocina": 1400, 
+const metas = { "Refrigeradora": 1400, 
+  "Cocina": 799, 
   "Lavadora": 1600,
-  "Cama": 2100,
-  "TV": 1800,
+  "Cama": 1700,
+  "TV": 500,
   "Sala": 2300,
   "Comedor": 700,
   "Microondas": 450,
