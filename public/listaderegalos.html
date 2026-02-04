@@ -5,274 +5,579 @@
   <title>Lista de Regalos | Jimena & Carlos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/regalos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* --- VARIABLES DE DISEÑO (Igual que la invitación principal) --- */
+    :root {
+      --primary: #b08d55;     /* Dorado elegante */
+      --primary-dark: #8c6b3d;
+      --bg-color: #fdfcfb;    /* Crema muy suave */
+      --card-bg: #ffffff;
+      --text-main: #2c2c2c;
+      --text-muted: #666666;
+      --success: #27ae60;
+      --radius: 12px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding-bottom: 50px;
+    }
+
+    /* --- HEADER --- */
+    .gift-header {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(to bottom, #fff, var(--bg-color));
+    }
+
+    .gift-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+
+    .gift-header p {
+      max-width: 600px;
+      margin: 0 auto 30px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .back-btn {
+      display: inline-block;
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 500;
+      border: 1px solid var(--primary);
+      padding: 10px 20px;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* --- GRID DE REGALOS --- */
+    .gift-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .gift-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 25px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .gift-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(176, 141, 85, 0.2);
+    }
+
+    .gift-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain; /* Ajusta la imagen sin cortarla */
+      margin-bottom: 20px;
+    }
+
+    .gift-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .gift-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    /* --- BARRA DE PROGRESO --- */
+    .progress-container {
+      margin-bottom: 15px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background-color: #eee;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 5px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #d4af37);
+      width: 0%;
+      transition: width 1s ease-out;
+    }
+
+    .progress-text {
+      font-size: 0.85rem;
+      color: var(--primary-dark);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 15px;
+    }
+
+    .btn-aportar {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .btn-aportar:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* --- MODALES --- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .modal.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: var(--radius);
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      text-align: center;
+      animation: slideUp 0.4s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 30px;
+      cursor: pointer;
+      color: #aaa;
+    }
+
+    .modal h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    /* Formulario e Inputs */
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .payment-info {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    /* Estilo de cuentas bancarias con botón copiar */
+    .bank-item {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+    .bank-item:last-child { border-bottom: none; }
+    
+    .bank-details strong { display: block; color: var(--primary-dark); }
+    
+    .copy-btn {
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      color: #666;
+    }
+    .copy-btn:hover { background: #eee; color: var(--primary); }
+
+    .qr-code {
+      display: block;
+      margin: 10px auto;
+      max-width: 150px;
+      border-radius: 8px;
+    }
+
+    .exchange-note {
+      font-size: 0.8rem;
+      color: #888;
+      margin-bottom: 15px;
+    }
+
+    /* Mensaje Toast (Copiado exitoso) */
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 4px;
+      padding: 16px;
+      position: fixed;
+      z-index: 2000;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+    }
+    #toast.show {
+      visibility: visible;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+    @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+  </style>
 </head>
 
 <body>
 
-<!-- ===== HEADER ===== -->
 <header class="gift-header">
   <h1>Lista de Regalos</h1>
   <p>
-    Su presencia es lo más importante para nosotros 🤍  
-    Si desean apoyarnos, pueden elegir libremente el monto que gusten.
+    Su presencia es nuestro mayor regalo. Si desean tener un detalle con nosotros, 
+    hemos creado esta lista de deseos para nuestro nuevo hogar.
   </p>
-  <a href="index.html" class="back-btn">← Volver al inicio</a>
+  <a href="index.html" class="back-btn">← Volver a la Invitación</a>
 </header>
 
-<!-- ===== LISTA DE REGALOS ===== -->
 <section class="gift-grid">
 
-  <!-- Refrigeradora -->
-  <div class="gift-card mint" data-target="Refrigeradora">
-    <img src="../fotografias/refrigeradora.png" alt="Refrigeradora">
-    <h3>Refrigeradora</h3>
-    <p>Para comenzar nuestro hogar y conservar muchos momentos dulces.</p>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-Refrigeradora" data-progress="0%" style="width:0%"></div>
+  <div class="gift-card">
+    <img src="../fotografias/refrigeradora.png" alt="Refrigeradora" onerror="this.src='https://via.placeholder.com/300?text=Refrigeradora'">
+    <div class="card-content">
+      <h3>Refrigeradora</h3>
+      <p>Para conservar nuestros momentos dulces.</p>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="fill-Refrigeradora"></div>
+        </div>
+        <span class="progress-text" id="text-Refrigeradora">S/ 0 de S/ 2000</span>
+      </div>
+      
+      <button class="btn-aportar" onclick="openModal('Refrigeradora', 2000)">Regalar una parte</button>
     </div>
-    <span class="progress-text" id="progressText-Refrigeradora">S/ 0 / S/ 2000</span>
-    <button onclick="openModal('Refrigeradora')">Aportar</button>
   </div>
 
-  <!-- Cocina -->
-  <div class="gift-card blush" data-target="Cocina">
-    <img src="../fotografias/cocina.png" alt="Cocina">
-    <h3>Cocina</h3>
-    <p>Donde nacerán nuevas recetas y recuerdos juntos.</p>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-Cocina" data-progress="0%" style="width:0%"></div>
+  <div class="gift-card">
+    <img src="../fotografias/cocina.png" alt="Cocina" onerror="this.src='https://via.placeholder.com/300?text=Cocina'">
+    <div class="card-content">
+      <h3>Cocina</h3>
+      <p>Donde nacerán nuevas recetas.</p>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="fill-Cocina"></div>
+        </div>
+        <span class="progress-text" id="text-Cocina">S/ 0 de S/ 1500</span>
+      </div>
+      
+      <button class="btn-aportar" onclick="openModal('Cocina', 1500)">Regalar una parte</button>
     </div>
-    <span class="progress-text" id="progressText-Cocina">S/ 0 / S/ 1500</span>
-    <button onclick="openModal('Cocina')">Aportar</button>
   </div>
 
-  <!-- Cubiertos -->
-  <div class="gift-card lavender" data-target="Cubiertos">
-    <img src="../fotografias/cubiertos.png" alt="Cubiertos">
-    <h3>Cubiertos</h3>
-    <p>Porque cada detalle suma en nuestro nuevo hogar.</p>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-Cubiertos" data-progress="0%" style="width:0%"></div>
+  <div class="gift-card">
+    <img src="../fotografias/tv.png" alt="TV" onerror="this.src='https://via.placeholder.com/300?text=TV'">
+    <div class="card-content">
+      <h3>Smart TV</h3>
+      <p>Para nuestras noches de películas.</p>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="fill-TV"></div>
+        </div>
+        <span class="progress-text" id="text-TV">S/ 0 de S/ 1800</span>
+      </div>
+      
+      <button class="btn-aportar" onclick="openModal('TV', 1800)">Regalar una parte</button>
     </div>
-    <span class="progress-text" id="progressText-Cubiertos">S/ 0 / S/ 300</span>
-    <button onclick="openModal('Cubiertos')">Aportar</button>
   </div>
 
-  <!-- Platos -->
-  <div class="gift-card sand" data-target="Platos">
-    <img src="../fotografias/platos.png" alt="Platos">
-    <h3>Platos</h3>
-    <p>Para compartir cada comida con alegría.</p>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-Platos" data-progress="0%" style="width:0%"></div>
+  <div class="gift-card">
+    <img src="../fotografias/mueble.png" alt="Muebles" onerror="this.src='https://via.placeholder.com/300?text=Muebles'">
+    <div class="card-content">
+      <h3>Juego de Sala</h3>
+      <p>Para recibir a nuestros amigos.</p>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="fill-Mueble"></div>
+        </div>
+        <span class="progress-text" id="text-Mueble">S/ 0 de S/ 1200</span>
+      </div>
+      
+      <button class="btn-aportar" onclick="openModal('Mueble', 1200)">Regalar una parte</button>
     </div>
-    <span class="progress-text" id="progressText-Platos">S/ 0 / S/ 500</span>
-    <button onclick="openModal('Platos')">Aportar</button>
   </div>
 
-  <!-- TV -->
-  <div class="gift-card sky" data-target="TV">
-    <img src="../fotografias/tv.png" alt="TV">
-    <h3>TV</h3>
-    <p>Para disfrutar momentos juntos y compartir series y películas.</p>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-TV" data-progress="0%" style="width:0%"></div>
+   <div class="gift-card">
+    <img src="../fotografias/viaje.png" alt="Luna de Miel" onerror="this.src='https://via.placeholder.com/300?text=Luna+de+Miel'">
+    <div class="card-content">
+      <h3>Luna de Miel</h3>
+      <p>Ayúdanos a tener un viaje inolvidable.</p>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="fill-Viaje"></div>
+        </div>
+        <span class="progress-text" id="text-Viaje">S/ 0 de S/ 3000</span>
+      </div>
+      
+      <button class="btn-aportar" onclick="openModal('Viaje', 3000)">Regalar una parte</button>
     </div>
-    <span class="progress-text" id="progressText-TV">S/ 0 / S/ 1800</span>
-    <button onclick="openModal('TV')">Aportar</button>
-  </div>
-
-  <!-- Mueble -->
-  <div class="gift-card mint" data-target="Mueble">
-    <img src="../fotografias/mueble.png" alt="Mueble">
-    <h3>Mueble</h3>
-    <p>Para crear un espacio cálido y lleno de amor.</p>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-Mueble" data-progress="0%" style="width:0%"></div>
-    </div>
-    <span class="progress-text" id="progressText-Mueble">S/ 0 / S/ 1200</span>
-    <button onclick="openModal('Mueble')">Aportar</button>
-  </div>
-
-  <!-- Juego de vasos -->
-  <div class="gift-card blush" data-target="Vasos">
-    <img src="../fotografias/vasos.png" alt="Juego de vasos">
-    <h3>Juego de vasos</h3>
-    <p>Para disfrutar bebidas y brindar juntos en cada ocasión.</p>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-Vasos" data-progress="0%" style="width:0%"></div>
-    </div>
-    <span class="progress-text" id="progressText-Vasos">S/ 0 / S/ 400</span>
-    <button onclick="openModal('Vasos')">Aportar</button>
-  </div>
-
-  <!-- Microondas -->
-  <div class="gift-card lavender" data-target="Microondas">
-    <img src="../fotografias/microondas.png" alt="Microondas">
-    <h3>Microondas</h3>
-    <p>Para facilitar la vida diaria y calentar con amor nuestra comida.</p>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-Microondas" data-progress="0%" style="width:0%"></div>
-    </div>
-    <span class="progress-text" id="progressText-Microondas">S/ 0 / S/ 700</span>
-    <button onclick="openModal('Microondas')">Aportar</button>
   </div>
 
 </section>
 
-<!-- ===== MODAL ===== -->
 <div class="modal" id="giftModal">
   <div class="modal-content">
-    <span class="close" onclick="closeModal()">×</span>
-    <h2 id="giftTitle"></h2>
+    <span class="close" onclick="closeModal('giftModal')">×</span>
+    <h2 id="modalTitle">Regalo</h2>
+    <p>Ingresa tus datos para registrar tu cariño.</p>
 
     <form onsubmit="confirmGift(event)">
-      <input type="text" id="nombre" placeholder="Tu nombre" required>
-      <select id="moneda" required>
-        <option value="PEN">Soles (S/)</option>
-        <option value="USD">Dólares ($)</option>
-      </select>
-      <input type="number" id="monto" placeholder="Monto" min="1" step="0.01" required>
-
-      <p class="exchange-note">
-        Si el aporte es en dólares, se calculará con tipo de cambio
-        <strong>1 USD = S/ 3.40</strong>
-      </p>
-
-      <div class="payment-info">
-        <p><strong>Yape:</strong> 960778888 - Carlos Ruiz</p>
-        <img src="../fotografias/yape.jpg" alt="QR Yape" class="qr-code">
-        <p><strong>BCP:</strong> Soles S/ 19199927056017 | Dólares $ 19108927605181</p>
-        <p><strong>Interbank:</strong> Soles S/ 8983489742065</p>
+      <input type="text" id="nombre" placeholder="Tu nombre completo" required autocomplete="off">
+      
+      <div style="display: flex; gap: 10px;">
+        <select id="moneda" style="flex: 1;">
+          <option value="PEN">Soles (S/)</option>
+          <option value="USD">Dólares ($)</option>
+        </select>
+        <input type="number" id="monto" placeholder="Monto" min="1" step="0.01" required style="flex: 2;">
       </div>
 
-      <button type="submit">Ya realicé la transferencia</button>
+      <p class="exchange-note">Tipo de cambio ref: $1 = S/ 3.40</p>
+
+      <div class="payment-info">
+        <div class="bank-item">
+          <div class="bank-details">
+            <strong>Yape / Plin</strong>
+            <span>960 778 888 (Carlos Ruiz)</span>
+          </div>
+          <button type="button" class="copy-btn" onclick="copyText('960778888')">Copiar</button>
+        </div>
+        <div class="bank-item">
+          <div class="bank-details">
+            <strong>BCP Soles</strong>
+            <span>191-99927056-0-17</span>
+          </div>
+          <button type="button" class="copy-btn" onclick="copyText('19199927056017')">Copiar</button>
+        </div>
+
+        <div class="bank-item">
+          <div class="bank-details">
+            <strong>Interbank Soles</strong>
+            <span>898-34897420-65</span>
+          </div>
+          <button type="button" class="copy-btn" onclick="copyText('8983489742065')">Copiar</button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-aportar">¡Listo, ya envié el regalo!</button>
     </form>
   </div>
 </div>
-<div class="confirmation-modal" id="confirmationModal">
-  <div class="modal-content">
-    <h2>¡Gracias por tu regalo! 🤍</h2>
-    <p>Jimena y Carlos recibieron tu aporte.  
-       Nos alegra que seas parte de nuestra historia y esperamos verte en nuestra boda.</p>
-    <button onclick="closeConfirmation()">Cerrar</button>
+
+<div class="modal" id="confirmationModal">
+  <div class="modal-content" style="text-align: center;">
+    <h2 style="color: var(--success);">¡Gracias Infinitas! 🤍</h2>
+    <p id="confirmMessage">Tu aporte ha sido registrado.</p>
+    <p>Nos hace muy felices contar contigo en nuestra nueva etapa.</p>
+    <br>
+    <button class="btn-aportar" onclick="closeModal('confirmationModal')">Cerrar</button>
   </div>
 </div>
 
-<!-- ===== MENSAJE FINAL ===== -->
-<section class="gift-note">
-  <p>
-    Cualquier aporte, desde <strong>S/ 5, S/ 10 o el monto que deseen</strong>,
-    será recibido con mucho cariño.  
-    Gracias por ser parte de nuestra historia 🤍
-  </p>
-</section>
+<div id="toast">Copiado al portapapeles</div>
 
-<!-- ===== JS ===== -->
 <script>
+// Configuración Inicial
 const TIPO_CAMBIO = 3.4;
 let regaloActual = "";
+let metaActual = 0;
 
-// Totales y acumulados
-const regalosTotales = {
-  "Refrigeradora": 2000,
-  "Cocina": 1500,
-  "Cubiertos": 300,
-  "Platos": 500,
-  "TV": 1800,
-  "Mueble": 1200,
-  "Vasos": 400,
-  "Microondas": 700
-};
-
-const regalosAcumulados = {
+// Objeto para guardar los acumulados (Se cargará del localStorage)
+let acumulados = JSON.parse(localStorage.getItem('boda_regalos_data')) || {
   "Refrigeradora": 0,
   "Cocina": 0,
-  "Cubiertos": 0,
-  "Platos": 0,
   "TV": 0,
   "Mueble": 0,
-  "Vasos": 0,
-  "Microondas": 0
+  "Viaje": 0
 };
 
-// Abrir modal principal
-function openModal(regalo) {
-  regaloActual = regalo;
-  document.getElementById("giftTitle").innerText = regalo;
-  document.getElementById("giftModal").classList.add("show");
+const metas = {
+  "Refrigeradora": 2000,
+  "Cocina": 1500,
+  "TV": 1800,
+  "Mueble": 1200,
+  "Viaje": 3000
+};
 
-  // Limpiar formulario
+// Función para inicializar las barras al cargar la página
+function initBars() {
+  for (let item in metas) {
+    updateUI(item);
+  }
+}
+
+// Función UI: Actualiza barra y texto
+function updateUI(item) {
+  if (!document.getElementById("fill-" + item)) return; // Seguridad si falta un elemento
+
+  const actual = acumulados[item] || 0;
+  const total = metas[item];
+  const porcentaje = Math.min((actual / total) * 100, 100);
+
+  // Animación de la barra
+  document.getElementById("fill-" + item).style.width = porcentaje + "%";
+  
+  // Texto
+  document.getElementById("text-" + item).innerText = 
+    `S/ ${actual.toFixed(2)} de S/ ${total}`;
+    
+  // Cambio de color si se completa
+  if (porcentaje >= 100) {
+    document.getElementById("fill-" + item).style.background = "#27ae60"; // Verde éxito
+  }
+}
+
+// Abrir Modal
+function openModal(item, meta) {
+  regaloActual = item;
+  metaActual = meta;
+  document.getElementById("modalTitle").innerText = "Regalar para: " + item;
   document.getElementById("nombre").value = "";
-  document.getElementById("moneda").value = "PEN";
   document.getElementById("monto").value = "";
+  
+  document.getElementById("giftModal").classList.add("show");
 }
 
-// Cerrar modal principal
-function closeModal() {
-  document.getElementById("giftModal").classList.remove("show");
+// Cerrar Modal
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove("show");
 }
 
-// Confirmar regalo y mostrar modal de confirmación
+// Función Copiar al Portapapeles
+function copyText(text) {
+  navigator.clipboard.writeText(text);
+  const toast = document.getElementById("toast");
+  toast.className = "show";
+  setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+}
+
+// Confirmar Regalo
 function confirmGift(e) {
   e.preventDefault();
-
-  const nombre = document.getElementById("nombre").value.trim();
-  const monto = parseFloat(document.getElementById("monto").value);
+  
+  const nombre = document.getElementById("nombre").value;
+  const montoInput = parseFloat(document.getElementById("monto").value);
   const moneda = document.getElementById("moneda").value;
 
-  if (!nombre || !monto || isNaN(monto)) return; // Validación
+  if (isNaN(montoInput) || montoInput <= 0) return;
 
-  let montoSoles = monto;
-  if (moneda === "USD") montoSoles *= TIPO_CAMBIO;
+  // Conversión
+  let aporteSoles = montoInput;
+  if (moneda === "USD") {
+    aporteSoles = montoInput * TIPO_CAMBIO;
+  }
 
-  // Actualizar acumulado
-  regalosAcumulados[regaloActual] += montoSoles;
-  const total = regalosTotales[regaloActual];
-  const porcentaje = Math.min((regalosAcumulados[regaloActual] / total) * 100, 100);
+  // Lógica de acumulado
+  acumulados[regaloActual] = (acumulados[regaloActual] || 0) + aporteSoles;
+  
+  // GUARDAR EN LOCALSTORAGE (Persistencia)
+  localStorage.setItem('boda_regalos_data', JSON.stringify(acumulados));
 
-  document.getElementById("progress-" + regaloActual).style.width = porcentaje + "%";
-  document.getElementById("progressText-" + regaloActual).innerText =
-    `S/ ${regalosAcumulados[regaloActual].toFixed(2)} / S/ ${total}`;
+  // Actualizar UI
+  updateUI(regaloActual);
 
-  // Cerrar modal principal
-  closeModal();
-
-  // Abrir modal de confirmación **después de un pequeño delay** para asegurar que el DOM actualice
+  // Cerrar modal actual y abrir confirmación
+  closeModal('giftModal');
+  
+  document.getElementById("confirmMessage").innerHTML = 
+    `Gracias <b>${nombre}</b>, hemos registrado tu aporte de <b>S/ ${aporteSoles.toFixed(2)}</b>.`;
+  
   setTimeout(() => {
-    const confirmation = document.getElementById("confirmationModal");
-    confirmation.querySelector("h2").innerText = `¡Gracias ${nombre}! 🤍`;
-    confirmation.classList.add("show");
-  }, 100); // 100ms de delay
+    document.getElementById("confirmationModal").classList.add("show");
+  }, 200);
 }
 
-// Cerrar modal de confirmación
-function closeConfirmation() {
-  document.getElementById("confirmationModal").classList.remove("show");
+// Cerrar modal si hacen click fuera
+window.onclick = function(event) {
+  if (event.target.classList.contains('modal')) {
+    event.target.classList.remove("show");
+  }
 }
 
-// Animaciones de entrada
-const gifts = document.querySelectorAll('.gift-card');
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.2 });
+// Iniciar
+document.addEventListener('DOMContentLoaded', initBars);
 
-gifts.forEach(gift => {
-  gift.classList.add('animate');
-  observer.observe(gift);
-});
 </script>
-
 
 </body>
 </html>
-
