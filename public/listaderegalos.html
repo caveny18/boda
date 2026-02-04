@@ -511,7 +511,18 @@ function copyText(val) {
 const TIPO_CAMBIO = 3.4;
 let regaloActual = "";
 let acumulados = JSON.parse(localStorage.getItem('regalos_db')) || {};
-const metas = { "Refrigeradora": 2000, "Cocina": 1500, "TV": 1800 };
+const metas = { "Refrigeradora": 2200, 
+  "Cocina": 1400, 
+  "Lavadora": 1600,
+  "Cama": 2100,
+  "TV": 1800,
+  "Sala": 2300,
+  "Comedor": 1800,
+  "Microondas": 450,
+  "Ollas": 500,
+  "Licuadora": 350,
+  "Vajilla": 300,
+  "Aspiradora": 400 };
 
 document.addEventListener('DOMContentLoaded', () => {
   for (let k in metas) updateUI(k);
