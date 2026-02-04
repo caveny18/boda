@@ -19,6 +19,7 @@
       --success: #27ae60;
       --radius: 16px;
       --shadow: 0 10px 30px rgba(0,0,0,0.08);
+      --overlay-z: 5000;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -30,15 +31,15 @@
       padding-bottom: 50px;
     }
 
-    /* --- HEADER CON IMAGEN ACTUALIZADA --- */
+    /* --- HEADER --- */
+    /* Nota: He puesto la ruta estándar 'fotografias/playa.jpg' */
     .gift-header {
       position: relative;
       text-align: center;
       padding: 80px 20px;
       color: white;
-      /* IMAGEN ACTUALIZADA AQUÍ */
-      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                  url('../fotografias/playa.jpg'); 
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                  url('fotografias/playa.jpg'); 
       background-size: cover;
       background-position: center;
       border-radius: 0 0 30px 30px;
@@ -73,10 +74,7 @@
       backdrop-filter: blur(5px);
     }
 
-    .back-btn:hover {
-      background: white;
-      color: var(--text-main);
-    }
+    .back-btn:hover { background: white; color: var(--text-main); }
 
     /* --- GRID DE REGALOS --- */
     .gift-grid {
@@ -97,10 +95,7 @@
       transition: transform 0.3s ease;
       display: flex;
       flex-direction: column;
-    }
-
-    .gift-card:hover {
-      transform: translateY(-5px);
+      position: relative; /* Necesario para el spotlight */
     }
 
     .gift-card img {
@@ -161,10 +156,9 @@
       box-shadow: 0 4px 15px rgba(176, 141, 85, 0.3);
       transition: transform 0.2s;
     }
-    
     .btn-aportar:active { transform: scale(0.98); }
 
-    /* --- MODALES (RESPONSIVE) --- */
+    /* --- MODALES DE PAGO --- */
     .modal {
       display: none;
       position: fixed;
@@ -181,10 +175,7 @@
       overflow-y: auto;
     }
 
-    .modal.show {
-      display: flex;
-      animation: fadeIn 0.3s;
-    }
+    .modal.show { display: flex; animation: fadeIn 0.3s; }
 
     .modal-content {
       background-color: #fff;
@@ -217,95 +208,100 @@
       transition: background 0.2s;
       z-index: 10;
     }
-    
     .close-btn:hover { background: #e0e0e0; color: #000; }
 
-    /* Estilos para el QR */
-    .qr-code {
-      display: block;
-      margin: 15px auto 5px; /* Centrado */
-      max-width: 180px; /* Tamaño controlado */
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    /* --- ESTILOS DEL TUTORIAL (ONBOARDING) --- */
+    .tutorial-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); /* Fondo oscuro fuerte */
+      z-index: var(--overlay-z);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 20px;
+      text-align: center;
     }
 
-    /* Formulario */
-    .form-group { margin-bottom: 15px; text-align: left; }
+    .tutorial-overlay.active { display: flex; animation: fadeIn 0.5s; }
+
+    .tutorial-card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 350px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      animation: slideUp 0.4s;
+      position: relative;
+      z-index: calc(var(--overlay-z) + 2);
+    }
+
+    .tutorial-img-container {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid var(--primary);
+      animation: float 3s ease-in-out infinite; /* Animación flotante */
+    }
+
+    .tutorial-img-container img { width: 100%; height: 100%; object-fit: cover; }
+
+    .tutorial-title { font-family: 'Playfair Display'; color: var(--primary); font-size: 1.5rem; margin-bottom: 10px; }
+    .tutorial-text { font-size: 0.95rem; color: #555; line-height: 1.5; margin-bottom: 25px; }
+
+    .tutorial-buttons { display: flex; gap: 10px; justify-content: center; }
     
-    input, select {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      font-size: 1rem;
-      background: #fafafa;
-      font-family: inherit;
+    .btn-skip { background: transparent; border: 1px solid #ccc; color: #666; padding: 10px 20px; border-radius: 50px; font-weight: 500; cursor: pointer; }
+    .btn-next { background: var(--primary); color: white; border: none; padding: 10px 25px; border-radius: 50px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 10px rgba(176,141,85,0.4); }
+
+    /* Clase para resaltar elementos durante el tutorial */
+    .highlight-element {
+      position: relative;
+      z-index: calc(var(--overlay-z) + 1);
+      background: white;
+      box-shadow: 0 0 0 10000px rgba(0,0,0,0.85) !important; /* Oscurece todo lo demás */
+      pointer-events: none; /* No permitir clicks reales durante el tutorial */
+    }
+    
+    /* Burbuja de dialogo flotante para pasos 2 y 3 */
+    .tutorial-bubble {
+      position: fixed;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 320px;
+      z-index: calc(var(--overlay-z) + 2);
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    .tutorial-bubble::after { /* Triangulito */
+      content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+      border-width: 0 10px 10px 10px; border-style: solid; border-color: transparent transparent white transparent;
     }
 
-    input:focus, select:focus {
-      border-color: var(--primary);
-      background: #fff;
-    }
-
-    .payment-info {
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 12px;
-      margin: 20px 0;
-      text-align: left;
-      font-size: 0.9rem;
-      border: 1px solid #eee;
-    }
-
-    .bank-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start; /* Alineación superior para nombres largos */
-      padding: 12px 0;
-      border-bottom: 1px solid #eee;
-    }
+    /* --- RESTO DE ESTILOS --- */
+    .qr-code { display: block; margin: 15px auto 5px; max-width: 180px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .form-group { margin-bottom: 15px; text-align: left; }
+    input, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; font-size: 1rem; background: #fafafa; font-family: inherit; }
+    input:focus, select:focus { border-color: var(--primary); background: #fff; }
+    .payment-info { background: #f8f9fa; padding: 15px; border-radius: 12px; margin: 20px 0; text-align: left; font-size: 0.9rem; border: 1px solid #eee; }
+    .bank-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #eee; }
     .bank-item:last-child { border-bottom: none; }
-
     .bank-details strong { display: block; color: var(--text-main); font-size: 0.95rem; margin-bottom: 4px; }
     .bank-details span { font-size: 0.9rem; color: #555; font-family: monospace; letter-spacing: 0.5px; display: block; }
-    .bank-details small { display: block; color: #888; font-size: 0.8rem; margin-top: 2px; font-family: 'Montserrat', sans-serif; letter-spacing: 0; }
-
-    .copy-btn {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 0.8rem;
-      color: var(--primary);
-      font-weight: 600;
-      cursor: pointer;
-      margin-left: 10px;
-      flex-shrink: 0; /* Evita que el botón se aplaste */
-      align-self: center;
-    }
-    .copy-btn:active { background: var(--primary); color: white; }
-
-    /* Animaciones */
+    .bank-details small { display: block; color: #888; font-size: 0.8rem; margin-top: 2px; }
+    .copy-btn { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 8px 12px; font-size: 0.8rem; color: var(--primary); font-weight: 600; cursor: pointer; margin-left: 10px; flex-shrink: 0; align-self: center; }
+    
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
 
-    /* Toast Notification */
-    #toast {
-      visibility: hidden;
-      min-width: 200px;
-      background-color: rgba(44, 44, 44, 0.95);
-      color: #fff;
-      text-align: center;
-      border-radius: 50px;
-      padding: 12px;
-      position: fixed;
-      z-index: 3000;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 14px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
+    #toast { visibility: hidden; min-width: 200px; background-color: rgba(44, 44, 44, 0.95); color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 3000; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
     #toast.show { visibility: visible; animation: fadein 0.3s, fadeout 0.3s 2.5s; }
 
   </style>
@@ -313,6 +309,27 @@
 
 <body>
 
+<div id="tutorialOverlay" class="tutorial-overlay">
+  <div id="step1" class="tutorial-card">
+    <div class="tutorial-img-container">
+      <img src="fotografias/pedida.jpg" alt="Nosotros">
+    </div>
+    <h3 class="tutorial-title">¡Bienvenidos a nuestra lista!</h3>
+    <p class="tutorial-text">
+      Gracias por el deseo de conocer nuestros regalos soñados. <br>
+      Queremos enseñarte brevemente cómo funciona para que sea súper fácil para ti.
+    </p>
+    <div class="tutorial-buttons">
+      <button class="btn-skip" onclick="endTutorial()">Omitir</button>
+      <button class="btn-next" onclick="nextStep(2)">Comenzar</button>
+    </div>
+  </div>
+
+  <div id="tutorialBubble" class="tutorial-bubble" style="display: none;">
+    <p id="bubbleText" class="tutorial-text" style="margin-bottom: 15px; font-weight: 500;"></p>
+    <button class="btn-next" onclick="advanceTutorial()" id="bubbleBtn">Entendido</button>
+  </div>
+</div>
 <header class="gift-header">
   <div class="header-content">
     <h1>Lista de Regalos</h1>
@@ -323,8 +340,8 @@
 
 <section class="gift-grid">
 
-  <div class="gift-card">
-    <img src="../fotografias/refrigeradora.png" alt="Refrigeradora" onerror="this.src='https://via.placeholder.com/300?text=Refrigeradora'">
+  <div class="gift-card" id="tutorialTarget">
+    <img src="fotografias/refrigeradora.png" alt="Refrigeradora" onerror="this.src='https://via.placeholder.com/300?text=Refrigeradora'">
     <h3>Refrigeradora</h3>
     <p>Para conservar nuestros momentos.</p>
     <div class="progress-container">
@@ -335,7 +352,7 @@
   </div>
 
   <div class="gift-card">
-    <img src="../fotografias/cocina.png" alt="Cocina" onerror="this.src='https://via.placeholder.com/300?text=Cocina'">
+    <img src="fotografias/cocina.png" alt="Cocina" onerror="this.src='https://via.placeholder.com/300?text=Cocina'">
     <h3>Cocina</h3>
     <p>Donde nacerán nuevas recetas.</p>
     <div class="progress-container">
@@ -346,7 +363,7 @@
   </div>
 
    <div class="gift-card">
-    <img src="../fotografias/tv.png" alt="TV" onerror="this.src='https://via.placeholder.com/300?text=TV'">
+    <img src="fotografias/tv.png" alt="TV" onerror="this.src='https://via.placeholder.com/300?text=TV'">
     <h3>Smart TV</h3>
     <p>Para noches de películas.</p>
     <div class="progress-container">
@@ -357,7 +374,7 @@
   </div>
 
    <div class="gift-card">
-    <img src="../fotografias/viaje.png" alt="Viaje" onerror="this.src='https://via.placeholder.com/300?text=Luna+de+Miel'">
+    <img src="fotografias/viaje.png" alt="Viaje" onerror="this.src='https://via.placeholder.com/300?text=Luna+de+Miel'">
     <h3>Luna de Miel</h3>
     <p>Para nuestra primera aventura.</p>
     <div class="progress-container">
@@ -371,16 +388,13 @@
 
 <div class="modal" id="giftModal">
   <div class="modal-content" onclick="event.stopPropagation()">
-    
     <div class="close-btn" onclick="closeModal('giftModal')">✕</div>
-
     <h2 id="modalTitle" style="font-family: 'Playfair Display'; color: var(--primary); margin-bottom: 20px;">Regalar</h2>
     
     <form onsubmit="confirmGift(event)">
       <div class="form-group">
         <input type="text" id="nombre" placeholder="Tu nombre completo" required autocomplete="off">
       </div>
-      
       <div class="form-group" style="display: flex; gap: 10px;">
         <select id="moneda" style="flex: 1;">
           <option value="PEN">Soles (S/)</option>
@@ -388,10 +402,7 @@
         </select>
         <input type="number" id="monto" placeholder="Monto" min="1" step="0.01" required style="flex: 2;">
       </div>
-
-      <p style="font-size: 0.8rem; color: #888; margin-top: -10px; margin-bottom: 15px;">
-        Cambio ref: $1 = S/ 3.40
-      </p>
+      <p style="font-size: 0.8rem; color: #888; margin-top: -10px; margin-bottom: 15px;">Cambio ref: $1 = S/ 3.40</p>
 
       <div class="payment-info">
         <div class="bank-item" style="flex-wrap: wrap;">
@@ -401,10 +412,8 @@
             <small>(Carlos Daniel Ruiz Cabrera)</small>
           </div>
           <button type="button" class="copy-btn" onclick="copyText('960778888')">Copiar</button>
-          
-          <img src="../fotografias/yape.jpg" alt="QR Yape" class="qr-code" style="width: 100%; flex-basis: 100%;">
+          <img src="fotografias/yape.jpg" alt="QR Yape" class="qr-code" style="width: 100%; flex-basis: 100%;">
         </div>
-
         <div class="bank-item">
           <div class="bank-details">
             <strong>BCP Soles</strong>
@@ -413,7 +422,6 @@
           </div>
           <button type="button" class="copy-btn" onclick="copyText('19199927056017')">Copiar</button>
         </div>
-        
         <div class="bank-item">
           <div class="bank-details">
             <strong>Interbank</strong>
@@ -423,7 +431,6 @@
           <button type="button" class="copy-btn" onclick="copyText('8983489742065')">Copiar</button>
         </div>
       </div>
-
       <button type="submit" class="btn-aportar">¡Listo, ya envié el regalo!</button>
     </form>
   </div>
@@ -432,7 +439,6 @@
 <div class="modal" id="confirmationModal">
   <div class="modal-content" style="text-align: center;" onclick="event.stopPropagation()">
     <div class="close-btn" onclick="closeModal('confirmationModal')">✕</div>
-    
     <div style="font-size: 3rem; margin-bottom: 10px;">🤍</div>
     <h2 style="color: var(--success); font-family: 'Playfair Display';">¡Gracias Infinitas!</h2>
     <p id="confirmMessage" style="color: #555; margin: 15px 0;">Tu aporte ha sido registrado.</p>
@@ -443,19 +449,84 @@
 <div id="toast">¡Copiado!</div>
 
 <script>
-// --- CONFIGURACIÓN ---
+// --- LOGICA DEL TUTORIAL ---
+let currentStep = 0;
+
+function checkTutorial() {
+  // Verificamos si ya vio el tutorial antes
+  if (!localStorage.getItem('tutorial_seen_v1')) {
+    // Si no lo ha visto, iniciamos
+    setTimeout(() => {
+      document.getElementById('tutorialOverlay').classList.add('active');
+    }, 1000); // Pequeña pausa al cargar la pagina
+  }
+}
+
+function nextStep(step) {
+  currentStep = step;
+  const overlay = document.getElementById('tutorialOverlay');
+  const step1 = document.getElementById('step1');
+  const bubble = document.getElementById('tutorialBubble');
+  const bubbleText = document.getElementById('bubbleText');
+  const bubbleBtn = document.getElementById('bubbleBtn');
+  const target = document.getElementById('tutorialTarget'); // Primera tarjeta
+
+  if (step === 2) {
+    // Esconder bienvenida
+    step1.style.display = 'none';
+    
+    // Iluminar la tarjeta (Spotlight)
+    target.classList.add('highlight-element');
+    // Scroll suave hacia la tarjeta para asegurar que se vea
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Mostrar burbuja de texto
+    bubble.style.display = 'block';
+    // Posicionar burbuja cerca de la tarjeta (ajuste simple visual)
+    bubble.style.top = '50%';
+    bubble.style.left = '50%';
+    bubble.style.transform = 'translate(-50%, -50%)'; 
+    bubble.style.marginTop = '140px'; // Bajarla un poco para que no tape la tarjeta
+
+    bubbleText.innerHTML = "¡Aquí está la magia! ✨ <br> Puedes aportar <b>S/ 50, S/ 100 o el monto que tú desees</b>. La barra irá avanzando hasta que cumplamos la meta juntos.";
+    bubbleBtn.innerText = "Siguiente";
+  } 
+  
+  else if (step === 3) {
+    bubbleText.innerHTML = "Al dar clic en 'Regalar', verás nuestro <b>QR de Yape y cuentas</b>. <br><br> Cuando hayas hecho la transferencia, colocas el monto, le das a enviar ¡y listo!";
+    bubbleBtn.innerText = "¡Entendido!";
+  } 
+  
+  else if (step === 4) {
+    endTutorial();
+  }
+}
+
+function advanceTutorial() {
+  if (currentStep === 2) nextStep(3);
+  else if (currentStep === 3) nextStep(4);
+}
+
+function endTutorial() {
+  document.getElementById('tutorialOverlay').classList.remove('active');
+  document.getElementById('tutorialTarget').classList.remove('highlight-element');
+  // Guardar en memoria para no mostrar de nuevo
+  localStorage.setItem('tutorial_seen_v1', 'true');
+}
+
+// --- CONFIGURACIÓN GENERAL ---
 const TIPO_CAMBIO = 3.4;
 let regaloActual = "";
 
-// Datos (Persistencia Local)
 let acumulados = JSON.parse(localStorage.getItem('boda_regalos_data')) || {};
 const metas = { "Refrigeradora": 2000, "Cocina": 1500, "TV": 1800, "Viaje": 3000 };
 
-// Iniciar
 document.addEventListener('DOMContentLoaded', () => {
+  // Iniciar datos
   for (let item in metas) updateUI(item);
+  // Iniciar Tutorial
+  checkTutorial();
   
-  // LOGICA PARA CERRAR MODAL AL DAR CLIC AFUERA
   window.onclick = function(event) {
     if (event.target.classList.contains('modal')) {
       event.target.classList.remove("show");
@@ -468,14 +539,11 @@ function updateUI(item) {
   const actual = acumulados[item] || 0;
   const total = metas[item];
   const porcentaje = Math.min((actual / total) * 100, 100);
-  
   document.getElementById("fill-" + item).style.width = porcentaje + "%";
   document.getElementById("text-" + item).innerText = `S/ ${actual.toFixed(2)} de S/ ${total}`;
-  
   if (porcentaje >= 100) document.getElementById("fill-" + item).style.background = "#27ae60";
 }
 
-// Abrir Modal
 function openModal(item, meta) {
   regaloActual = item;
   document.getElementById("modalTitle").innerText = "Regalo para " + item;
@@ -484,12 +552,10 @@ function openModal(item, meta) {
   document.getElementById("giftModal").classList.add("show");
 }
 
-// Cerrar Modal (función llamada por la X y botones)
 function closeModal(id) {
   document.getElementById(id).classList.remove("show");
 }
 
-// Copiar texto
 function copyText(text) {
   navigator.clipboard.writeText(text);
   const toast = document.getElementById("toast");
@@ -497,23 +563,17 @@ function copyText(text) {
   setTimeout(() => toast.className = toast.className.replace("show", ""), 2500);
 }
 
-// Confirmar regalo
 function confirmGift(e) {
   e.preventDefault();
   const nombre = document.getElementById("nombre").value;
   const monto = parseFloat(document.getElementById("monto").value);
   const moneda = document.getElementById("moneda").value;
-  
   if (isNaN(monto) || monto <= 0) return;
-
   let aporteSoles = (moneda === "USD") ? monto * TIPO_CAMBIO : monto;
-  
   acumulados[regaloActual] = (acumulados[regaloActual] || 0) + aporteSoles;
   localStorage.setItem('boda_regalos_data', JSON.stringify(acumulados));
-  
   updateUI(regaloActual);
   closeModal('giftModal');
-  
   document.getElementById("confirmMessage").innerHTML = `Gracias <b>${nombre}</b>, recibimos tu cariño.`;
   setTimeout(() => document.getElementById("confirmationModal").classList.add("show"), 300);
 }
