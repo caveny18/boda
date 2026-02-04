@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Lista de Regalos | Jimena & Carlos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
   
   <style>
-    /* --- VARIABLES DE DISEÑO (Igual que la invitación principal) --- */
+    /* --- VARIABLES --- */
     :root {
-      --primary: #b08d55;     /* Dorado elegante */
+      --primary: #b08d55;     
       --primary-dark: #8c6b3d;
-      --bg-color: #fdfcfb;    /* Crema muy suave */
+      --bg-color: #fdfcfb;
       --card-bg: #ffffff;
       --text-main: #2c2c2c;
       --text-muted: #666666;
       --success: #27ae60;
-      --radius: 12px;
-      --shadow: 0 10px 30px rgba(0,0,0,0.05);
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.08);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+    * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
 
     body {
       font-family: 'Montserrat', sans-serif;
@@ -30,41 +30,52 @@
       padding-bottom: 50px;
     }
 
-    /* --- HEADER --- */
+    /* --- HEADER CON IMAGEN --- */
     .gift-header {
+      position: relative;
       text-align: center;
-      padding: 60px 20px;
-      background: linear-gradient(to bottom, #fff, var(--bg-color));
+      padding: 80px 20px;
+      color: white;
+      /* REEMPLAZA 'tu-imagen.jpg' CON LA RUTA DE TU FOTO */
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                  url('../fotografias/portada-regalos.jpg'); 
+      background-size: cover;
+      background-position: center;
+      border-radius: 0 0 30px 30px; /* Borde redondeado abajo */
+      margin-bottom: 40px;
     }
 
     .gift-header h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 3rem;
-      color: var(--primary);
+      font-size: clamp(2.5rem, 5vw, 4rem); /* Texto responsive */
       margin-bottom: 15px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
     .gift-header p {
       max-width: 600px;
       margin: 0 auto 30px;
-      color: var(--text-muted);
+      font-size: 1.1rem;
       line-height: 1.6;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
     }
 
     .back-btn {
       display: inline-block;
       text-decoration: none;
-      color: var(--primary);
+      color: white;
       font-weight: 500;
-      border: 1px solid var(--primary);
-      padding: 10px 20px;
-      border-radius: 30px;
+      border: 2px solid white;
+      padding: 10px 25px;
+      border-radius: 50px;
       transition: all 0.3s ease;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(5px);
     }
 
     .back-btn:hover {
-      background: var(--primary);
-      color: #fff;
+      background: white;
+      color: var(--text-main);
     }
 
     /* --- GRID DE REGALOS --- */
@@ -80,31 +91,29 @@
     .gift-card {
       background: var(--card-bg);
       border-radius: var(--radius);
-      padding: 25px;
+      padding: 20px;
       box-shadow: var(--shadow);
       text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.3s ease;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
     }
 
     .gift-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(176, 141, 85, 0.2);
     }
 
     .gift-card img {
       width: 100%;
       height: 180px;
-      object-fit: contain; /* Ajusta la imagen sin cortarla */
-      margin-bottom: 20px;
+      object-fit: contain;
+      margin-bottom: 15px;
     }
 
     .gift-card h3 {
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      margin-bottom: 10px;
+      font-size: 1.4rem;
+      margin-bottom: 8px;
     }
 
     .gift-card p {
@@ -115,15 +124,13 @@
     }
 
     /* --- BARRA DE PROGRESO --- */
-    .progress-container {
-      margin-bottom: 15px;
-    }
-
+    .progress-container { margin-bottom: 15px; }
+    
     .progress-bar {
       width: 100%;
       height: 10px;
-      background-color: #eee;
-      border-radius: 5px;
+      background-color: #f0f0f0;
+      border-radius: 10px;
       overflow: hidden;
       margin-bottom: 5px;
     }
@@ -136,161 +143,158 @@
     }
 
     .progress-text {
-      font-size: 0.85rem;
-      color: var(--primary-dark);
+      font-size: 0.8rem;
       font-weight: 600;
-      display: block;
-      margin-bottom: 15px;
+      color: var(--primary-dark);
     }
 
     .btn-aportar {
       background-color: var(--primary);
       color: white;
       border: none;
-      padding: 12px;
+      padding: 14px;
       width: 100%;
       border-radius: var(--radius);
       cursor: pointer;
       font-size: 1rem;
-      font-weight: 500;
-      transition: background 0.3s;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(176, 141, 85, 0.3);
+      transition: transform 0.2s;
     }
+    
+    .btn-aportar:active { transform: scale(0.98); }
 
-    .btn-aportar:hover {
-      background-color: var(--primary-dark);
-    }
-
-    /* --- MODALES --- */
+    /* --- MODALES (RESPONSIVE) --- */
     .modal {
       display: none;
       position: fixed;
-      z-index: 1000;
+      z-index: 2000;
       left: 0;
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0,0.6);
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.3s;
+      background-color: rgba(0,0,0,0.7); /* Fondo oscuro */
+      backdrop-filter: blur(4px); /* Efecto borroso de fondo */
+      align-items: center; /* Centrar vertical */
+      justify-content: center; /* Centrar horizontal */
+      padding: 20px;
+      overflow-y: auto; /* Permite scroll si la pantalla es muy chica */
     }
 
     .modal.show {
       display: flex;
-      opacity: 1;
+      animation: fadeIn 0.3s;
     }
 
     .modal-content {
       background-color: #fff;
-      padding: 40px;
-      border-radius: var(--radius);
-      width: 90%;
-      max-width: 500px;
+      padding: 30px 25px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 480px;
       position: relative;
-      text-align: center;
-      animation: slideUp 0.4s ease;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      animation: slideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      max-height: 90vh; /* Evita que sea más alto que la pantalla */
+      overflow-y: auto; /* Scroll interno si es necesario */
     }
 
-    @keyframes slideUp {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .close {
+    /* BOTÓN CERRAR (X) */
+    .close-btn {
       position: absolute;
       top: 15px;
-      right: 20px;
-      font-size: 30px;
+      right: 15px;
+      width: 36px;
+      height: 36px;
+      background: #f0f0f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      color: #aaa;
+      font-size: 20px;
+      color: #555;
+      font-weight: bold;
+      transition: background 0.2s;
+      z-index: 10;
     }
+    
+    .close-btn:hover { background: #e0e0e0; color: #000; }
 
-    .modal h2 {
-      font-family: 'Playfair Display', serif;
-      color: var(--primary);
-      margin-bottom: 20px;
-    }
-
-    /* Formulario e Inputs */
+    /* Formulario */
+    .form-group { margin-bottom: 15px; text-align: left; }
+    
     input, select {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
+      padding: 14px;
       border: 1px solid #ddd;
-      border-radius: 8px;
-      font-family: 'Montserrat', sans-serif;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: #fafafa;
+      font-family: inherit;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+      background: #fff;
     }
 
     .payment-info {
-      background: #f9f9f9;
+      background: #f8f9fa;
       padding: 15px;
-      border-radius: 8px;
+      border-radius: 12px;
       margin: 20px 0;
       text-align: left;
       font-size: 0.9rem;
+      border: 1px solid #eee;
     }
 
-    /* Estilo de cuentas bancarias con botón copiar */
     .bank-item {
-      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 10px 0;
       border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
     }
     .bank-item:last-child { border-bottom: none; }
-    
-    .bank-details strong { display: block; color: var(--primary-dark); }
-    
+
+    .bank-details strong { display: block; color: var(--text-main); font-size: 0.95rem; }
+    .bank-details span { font-size: 0.85rem; color: #666; font-family: monospace; letter-spacing: 0.5px; }
+
     .copy-btn {
-      background: none;
+      background: #fff;
       border: 1px solid #ddd;
-      border-radius: 5px;
-      padding: 4px 8px;
-      cursor: pointer;
-      font-size: 0.7rem;
-      color: #666;
-    }
-    .copy-btn:hover { background: #eee; color: var(--primary); }
-
-    .qr-code {
-      display: block;
-      margin: 10px auto;
-      max-width: 150px;
       border-radius: 8px;
-    }
-
-    .exchange-note {
+      padding: 6px 12px;
       font-size: 0.8rem;
-      color: #888;
-      margin-bottom: 15px;
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
     }
+    .copy-btn:active { background: var(--primary); color: white; }
 
-    /* Mensaje Toast (Copiado exitoso) */
+    /* Animaciones */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* Toast Notification */
     #toast {
       visibility: hidden;
-      min-width: 250px;
-      background-color: #333;
+      min-width: 200px;
+      background-color: rgba(44, 44, 44, 0.95);
       color: #fff;
       text-align: center;
-      border-radius: 4px;
-      padding: 16px;
+      border-radius: 50px;
+      padding: 12px;
       position: fixed;
-      z-index: 2000;
+      z-index: 3000;
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
       font-size: 14px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
-    #toast.show {
-      visibility: visible;
-      animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    }
-
-    @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-    @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+    #toast.show { visibility: visible; animation: fadein 0.3s, fadeout 0.3s 2.5s; }
 
   </style>
 </head>
@@ -298,113 +302,74 @@
 <body>
 
 <header class="gift-header">
-  <h1>Lista de Regalos</h1>
-  <p>
-    Su presencia es nuestro mayor regalo. Si desean tener un detalle con nosotros, 
-    hemos creado esta lista de deseos para nuestro nuevo hogar.
-  </p>
-  <a href="index.html" class="back-btn">← Volver a la Invitación</a>
+  <div class="header-content">
+    <h1>Lista de Regalos</h1>
+    <p>Ayúdanos a construir nuestro hogar con un detalle lleno de amor.</p>
+    <a href="index.html" class="back-btn">← Volver a la Boda</a>
+  </div>
 </header>
 
 <section class="gift-grid">
 
   <div class="gift-card">
     <img src="../fotografias/refrigeradora.png" alt="Refrigeradora" onerror="this.src='https://via.placeholder.com/300?text=Refrigeradora'">
-    <div class="card-content">
-      <h3>Refrigeradora</h3>
-      <p>Para conservar nuestros momentos dulces.</p>
-      
-      <div class="progress-container">
-        <div class="progress-bar">
-          <div class="progress-fill" id="fill-Refrigeradora"></div>
-        </div>
-        <span class="progress-text" id="text-Refrigeradora">S/ 0 de S/ 2000</span>
-      </div>
-      
-      <button class="btn-aportar" onclick="openModal('Refrigeradora', 2000)">Regalar una parte</button>
+    <h3>Refrigeradora</h3>
+    <p>Para conservar nuestros momentos.</p>
+    <div class="progress-container">
+      <div class="progress-bar"><div class="progress-fill" id="fill-Refrigeradora"></div></div>
+      <span class="progress-text" id="text-Refrigeradora">S/ 0 / S/ 2000</span>
     </div>
+    <button class="btn-aportar" onclick="openModal('Refrigeradora', 2000)">Regalar</button>
   </div>
 
   <div class="gift-card">
     <img src="../fotografias/cocina.png" alt="Cocina" onerror="this.src='https://via.placeholder.com/300?text=Cocina'">
-    <div class="card-content">
-      <h3>Cocina</h3>
-      <p>Donde nacerán nuevas recetas.</p>
-      
-      <div class="progress-container">
-        <div class="progress-bar">
-          <div class="progress-fill" id="fill-Cocina"></div>
-        </div>
-        <span class="progress-text" id="text-Cocina">S/ 0 de S/ 1500</span>
-      </div>
-      
-      <button class="btn-aportar" onclick="openModal('Cocina', 1500)">Regalar una parte</button>
+    <h3>Cocina</h3>
+    <p>Donde nacerán nuevas recetas.</p>
+    <div class="progress-container">
+      <div class="progress-bar"><div class="progress-fill" id="fill-Cocina"></div></div>
+      <span class="progress-text" id="text-Cocina">S/ 0 / S/ 1500</span>
     </div>
-  </div>
-
-  <div class="gift-card">
-    <img src="../fotografias/tv.png" alt="TV" onerror="this.src='https://via.placeholder.com/300?text=TV'">
-    <div class="card-content">
-      <h3>Smart TV</h3>
-      <p>Para nuestras noches de películas.</p>
-      
-      <div class="progress-container">
-        <div class="progress-bar">
-          <div class="progress-fill" id="fill-TV"></div>
-        </div>
-        <span class="progress-text" id="text-TV">S/ 0 de S/ 1800</span>
-      </div>
-      
-      <button class="btn-aportar" onclick="openModal('TV', 1800)">Regalar una parte</button>
-    </div>
-  </div>
-
-  <div class="gift-card">
-    <img src="../fotografias/mueble.png" alt="Muebles" onerror="this.src='https://via.placeholder.com/300?text=Muebles'">
-    <div class="card-content">
-      <h3>Juego de Sala</h3>
-      <p>Para recibir a nuestros amigos.</p>
-      
-      <div class="progress-container">
-        <div class="progress-bar">
-          <div class="progress-fill" id="fill-Mueble"></div>
-        </div>
-        <span class="progress-text" id="text-Mueble">S/ 0 de S/ 1200</span>
-      </div>
-      
-      <button class="btn-aportar" onclick="openModal('Mueble', 1200)">Regalar una parte</button>
-    </div>
+    <button class="btn-aportar" onclick="openModal('Cocina', 1500)">Regalar</button>
   </div>
 
    <div class="gift-card">
-    <img src="../fotografias/viaje.png" alt="Luna de Miel" onerror="this.src='https://via.placeholder.com/300?text=Luna+de+Miel'">
-    <div class="card-content">
-      <h3>Luna de Miel</h3>
-      <p>Ayúdanos a tener un viaje inolvidable.</p>
-      
-      <div class="progress-container">
-        <div class="progress-bar">
-          <div class="progress-fill" id="fill-Viaje"></div>
-        </div>
-        <span class="progress-text" id="text-Viaje">S/ 0 de S/ 3000</span>
-      </div>
-      
-      <button class="btn-aportar" onclick="openModal('Viaje', 3000)">Regalar una parte</button>
+    <img src="../fotografias/tv.png" alt="TV" onerror="this.src='https://via.placeholder.com/300?text=TV'">
+    <h3>Smart TV</h3>
+    <p>Para noches de películas.</p>
+    <div class="progress-container">
+      <div class="progress-bar"><div class="progress-fill" id="fill-TV"></div></div>
+      <span class="progress-text" id="text-TV">S/ 0 / S/ 1800</span>
     </div>
+    <button class="btn-aportar" onclick="openModal('TV', 1800)">Regalar</button>
+  </div>
+
+   <div class="gift-card">
+    <img src="../fotografias/viaje.png" alt="Viaje" onerror="this.src='https://via.placeholder.com/300?text=Luna+de+Miel'">
+    <h3>Luna de Miel</h3>
+    <p>Para nuestra primera aventura.</p>
+    <div class="progress-container">
+      <div class="progress-bar"><div class="progress-fill" id="fill-Viaje"></div></div>
+      <span class="progress-text" id="text-Viaje">S/ 0 / S/ 3000</span>
+    </div>
+    <button class="btn-aportar" onclick="openModal('Viaje', 3000)">Regalar</button>
   </div>
 
 </section>
 
 <div class="modal" id="giftModal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('giftModal')">×</span>
-    <h2 id="modalTitle">Regalo</h2>
-    <p>Ingresa tus datos para registrar tu cariño.</p>
+  <div class="modal-content" onclick="event.stopPropagation()">
+    
+    <div class="close-btn" onclick="closeModal('giftModal')">✕</div>
 
+    <h2 id="modalTitle" style="font-family: 'Playfair Display'; color: var(--primary); margin-bottom: 20px;">Regalar</h2>
+    
     <form onsubmit="confirmGift(event)">
-      <input type="text" id="nombre" placeholder="Tu nombre completo" required autocomplete="off">
+      <div class="form-group">
+        <input type="text" id="nombre" placeholder="Tu nombre completo" required autocomplete="off">
+      </div>
       
-      <div style="display: flex; gap: 10px;">
+      <div class="form-group" style="display: flex; gap: 10px;">
         <select id="moneda" style="flex: 1;">
           <option value="PEN">Soles (S/)</option>
           <option value="USD">Dólares ($)</option>
@@ -412,16 +377,19 @@
         <input type="number" id="monto" placeholder="Monto" min="1" step="0.01" required style="flex: 2;">
       </div>
 
-      <p class="exchange-note">Tipo de cambio ref: $1 = S/ 3.40</p>
+      <p style="font-size: 0.8rem; color: #888; margin-top: -10px; margin-bottom: 15px;">
+        Cambio ref: $1 = S/ 3.40
+      </p>
 
       <div class="payment-info">
         <div class="bank-item">
           <div class="bank-details">
             <strong>Yape / Plin</strong>
-            <span>960 778 888 (Carlos Ruiz)</span>
+            <span>960 778 888</span>
           </div>
           <button type="button" class="copy-btn" onclick="copyText('960778888')">Copiar</button>
         </div>
+
         <div class="bank-item">
           <div class="bank-details">
             <strong>BCP Soles</strong>
@@ -429,10 +397,10 @@
           </div>
           <button type="button" class="copy-btn" onclick="copyText('19199927056017')">Copiar</button>
         </div>
-
+        
         <div class="bank-item">
           <div class="bank-details">
-            <strong>Interbank Soles</strong>
+            <strong>Interbank</strong>
             <span>898-34897420-65</span>
           </div>
           <button type="button" class="copy-btn" onclick="copyText('8983489742065')">Copiar</button>
@@ -445,138 +413,93 @@
 </div>
 
 <div class="modal" id="confirmationModal">
-  <div class="modal-content" style="text-align: center;">
-    <h2 style="color: var(--success);">¡Gracias Infinitas! 🤍</h2>
-    <p id="confirmMessage">Tu aporte ha sido registrado.</p>
-    <p>Nos hace muy felices contar contigo en nuestra nueva etapa.</p>
-    <br>
+  <div class="modal-content" style="text-align: center;" onclick="event.stopPropagation()">
+    <div class="close-btn" onclick="closeModal('confirmationModal')">✕</div>
+    
+    <div style="font-size: 3rem; margin-bottom: 10px;">🤍</div>
+    <h2 style="color: var(--success); font-family: 'Playfair Display';">¡Gracias Infinitas!</h2>
+    <p id="confirmMessage" style="color: #555; margin: 15px 0;">Tu aporte ha sido registrado.</p>
     <button class="btn-aportar" onclick="closeModal('confirmationModal')">Cerrar</button>
   </div>
 </div>
 
-<div id="toast">Copiado al portapapeles</div>
+<div id="toast">¡Copiado!</div>
 
 <script>
-// Configuración Inicial
+// --- CONFIGURACIÓN ---
 const TIPO_CAMBIO = 3.4;
 let regaloActual = "";
-let metaActual = 0;
 
-// Objeto para guardar los acumulados (Se cargará del localStorage)
-let acumulados = JSON.parse(localStorage.getItem('boda_regalos_data')) || {
-  "Refrigeradora": 0,
-  "Cocina": 0,
-  "TV": 0,
-  "Mueble": 0,
-  "Viaje": 0
-};
+// Datos (Persistencia Local)
+let acumulados = JSON.parse(localStorage.getItem('boda_regalos_data')) || {};
+const metas = { "Refrigeradora": 2000, "Cocina": 1500, "TV": 1800, "Viaje": 3000 };
 
-const metas = {
-  "Refrigeradora": 2000,
-  "Cocina": 1500,
-  "TV": 1800,
-  "Mueble": 1200,
-  "Viaje": 3000
-};
-
-// Función para inicializar las barras al cargar la página
-function initBars() {
-  for (let item in metas) {
-    updateUI(item);
+// Iniciar
+document.addEventListener('DOMContentLoaded', () => {
+  for (let item in metas) updateUI(item);
+  
+  // LOGICA PARA CERRAR MODAL AL DAR CLIC AFUERA
+  window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+      event.target.classList.remove("show");
+    }
   }
-}
+});
 
-// Función UI: Actualiza barra y texto
 function updateUI(item) {
-  if (!document.getElementById("fill-" + item)) return; // Seguridad si falta un elemento
-
+  if (!document.getElementById("fill-" + item)) return;
   const actual = acumulados[item] || 0;
   const total = metas[item];
   const porcentaje = Math.min((actual / total) * 100, 100);
-
-  // Animación de la barra
-  document.getElementById("fill-" + item).style.width = porcentaje + "%";
   
-  // Texto
-  document.getElementById("text-" + item).innerText = 
-    `S/ ${actual.toFixed(2)} de S/ ${total}`;
-    
-  // Cambio de color si se completa
-  if (porcentaje >= 100) {
-    document.getElementById("fill-" + item).style.background = "#27ae60"; // Verde éxito
-  }
+  document.getElementById("fill-" + item).style.width = porcentaje + "%";
+  document.getElementById("text-" + item).innerText = `S/ ${actual.toFixed(2)} de S/ ${total}`;
+  
+  if (porcentaje >= 100) document.getElementById("fill-" + item).style.background = "#27ae60";
 }
 
 // Abrir Modal
 function openModal(item, meta) {
   regaloActual = item;
-  metaActual = meta;
-  document.getElementById("modalTitle").innerText = "Regalar para: " + item;
+  document.getElementById("modalTitle").innerText = "Regalo para " + item;
   document.getElementById("nombre").value = "";
   document.getElementById("monto").value = "";
-  
   document.getElementById("giftModal").classList.add("show");
 }
 
-// Cerrar Modal
-function closeModal(modalId) {
-  document.getElementById(modalId).classList.remove("show");
+// Cerrar Modal (función llamada por la X y botones)
+function closeModal(id) {
+  document.getElementById(id).classList.remove("show");
 }
 
-// Función Copiar al Portapapeles
+// Copiar texto
 function copyText(text) {
   navigator.clipboard.writeText(text);
   const toast = document.getElementById("toast");
   toast.className = "show";
-  setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+  setTimeout(() => toast.className = toast.className.replace("show", ""), 2500);
 }
 
-// Confirmar Regalo
+// Confirmar regalo
 function confirmGift(e) {
   e.preventDefault();
-  
   const nombre = document.getElementById("nombre").value;
-  const montoInput = parseFloat(document.getElementById("monto").value);
+  const monto = parseFloat(document.getElementById("monto").value);
   const moneda = document.getElementById("moneda").value;
-
-  if (isNaN(montoInput) || montoInput <= 0) return;
-
-  // Conversión
-  let aporteSoles = montoInput;
-  if (moneda === "USD") {
-    aporteSoles = montoInput * TIPO_CAMBIO;
-  }
-
-  // Lógica de acumulado
-  acumulados[regaloActual] = (acumulados[regaloActual] || 0) + aporteSoles;
   
-  // GUARDAR EN LOCALSTORAGE (Persistencia)
+  if (isNaN(monto) || monto <= 0) return;
+
+  let aporteSoles = (moneda === "USD") ? monto * TIPO_CAMBIO : monto;
+  
+  acumulados[regaloActual] = (acumulados[regaloActual] || 0) + aporteSoles;
   localStorage.setItem('boda_regalos_data', JSON.stringify(acumulados));
-
-  // Actualizar UI
+  
   updateUI(regaloActual);
-
-  // Cerrar modal actual y abrir confirmación
   closeModal('giftModal');
   
-  document.getElementById("confirmMessage").innerHTML = 
-    `Gracias <b>${nombre}</b>, hemos registrado tu aporte de <b>S/ ${aporteSoles.toFixed(2)}</b>.`;
-  
-  setTimeout(() => {
-    document.getElementById("confirmationModal").classList.add("show");
-  }, 200);
+  document.getElementById("confirmMessage").innerHTML = `Gracias <b>${nombre}</b>, recibimos tu cariño.`;
+  setTimeout(() => document.getElementById("confirmationModal").classList.add("show"), 300);
 }
-
-// Cerrar modal si hacen click fuera
-window.onclick = function(event) {
-  if (event.target.classList.contains('modal')) {
-    event.target.classList.remove("show");
-  }
-}
-
-// Iniciar
-document.addEventListener('DOMContentLoaded', initBars);
-
 </script>
 
 </body>
