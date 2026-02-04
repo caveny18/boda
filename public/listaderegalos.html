@@ -311,9 +311,9 @@
     <p>El lugar de las charlas y cenas ricas.</p>
     <div class="progress-container">
       <div class="progress-bar"><div class="progress-fill" id="fill-Comedor"></div></div>
-      <span class="progress-text" id="text-Comedor">S/ 0 / S/ 1800</span>
+      <span class="progress-text" id="text-Comedor">S/ 0 / S/ 700</span>
     </div>
-    <button class="btn-aportar" onclick="openModal('Comedor', 1800)">Regalar</button>
+    <button class="btn-aportar" onclick="openModal('Comedor', 700)">Regalar</button>
   </div>
 
   <div class="gift-card">
@@ -333,9 +333,9 @@
     <p>El corazón de nuestra sazón casera.</p>
     <div class="progress-container">
       <div class="progress-bar"><div class="progress-fill" id="fill-Ollas"></div></div>
-      <span class="progress-text" id="text-Ollas">S/ 0 / S/ 500</span>
+      <span class="progress-text" id="text-Ollas">S/ 0 / S/ 350</span>
     </div>
-    <button class="btn-aportar" onclick="openModal('Ollas', 500)">Regalar</button>
+    <button class="btn-aportar" onclick="openModal('Ollas', 350)">Regalar</button>
   </div>
 
   <div class="gift-card">
@@ -344,9 +344,9 @@
     <p>Para empezar el día con mucha energía.</p>
     <div class="progress-container">
       <div class="progress-bar"><div class="progress-fill" id="fill-Licuadora"></div></div>
-      <span class="progress-text" id="text-Licuadora">S/ 0 / S/ 350</span>
+      <span class="progress-text" id="text-Licuadora">S/ 0 / S/ 75</span>
     </div>
-    <button class="btn-aportar" onclick="openModal('Licuadora', 350)">Regalar</button>
+    <button class="btn-aportar" onclick="openModal('Licuadora', 75)">Regalar</button>
   </div>
 
   <div class="gift-card">
@@ -355,20 +355,20 @@
     <p>Para servir la mesa con mucho amor.</p>
     <div class="progress-container">
       <div class="progress-bar"><div class="progress-fill" id="fill-Vajilla"></div></div>
-      <span class="progress-text" id="text-Vajilla">S/ 0 / S/ 300</span>
+      <span class="progress-text" id="text-Vajilla">S/ 0 / S/ 120</span>
     </div>
-    <button class="btn-aportar" onclick="openModal('Vajilla', 300)">Regalar</button>
+    <button class="btn-aportar" onclick="openModal('Vajilla', 120)">Regalar</button>
   </div>
 
   <div class="gift-card">
-    <img src="../fotografias/aspiradora.png" alt="Aspiradora" onerror="this.src='https://via.placeholder.com/300?text=Aspiradora'">
-    <h3>Aspiradora</h3>
-    <p>Para mantener nuestro hogar brillante.</p>
+    <img src="../fotografias/waflera.png" alt="Waflera" onerror="this.src='https://via.placeholder.com/300?text=Waflera'">
+    <h3>Waflera</h3>
+    <p>Para nuestros dulces desayunos.</p>
     <div class="progress-container">
-      <div class="progress-bar"><div class="progress-fill" id="fill-Aspiradora"></div></div>
-      <span class="progress-text" id="text-Aspiradora">S/ 0 / S/ 400</span>
+      <div class="progress-bar"><div class="progress-fill" id="fill-Waflera"></div></div>
+      <span class="progress-text" id="text-Waflera">S/ 0 / S/ 49</span>
     </div>
-    <button class="btn-aportar" onclick="openModal('Aspiradora', 400)">Regalar</button>
+    <button class="btn-aportar" onclick="openModal('Waflera', 49)">Regalar</button>
   </div>
 </section>
 
@@ -517,12 +517,12 @@ const metas = { "Refrigeradora": 2200,
   "Cama": 2100,
   "TV": 1800,
   "Sala": 2300,
-  "Comedor": 1800,
+  "Comedor": 700,
   "Microondas": 450,
-  "Ollas": 500,
-  "Licuadora": 350,
-  "Vajilla": 300,
-  "Aspiradora": 400 };
+  "Ollas": 350,
+  "Licuadora": 75,
+  "Vajilla": 120,
+  "Waflera": 49 };
 
 document.addEventListener('DOMContentLoaded', () => {
   for (let k in metas) updateUI(k);
