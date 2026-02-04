@@ -30,24 +30,24 @@
       padding-bottom: 50px;
     }
 
-    /* --- HEADER CON IMAGEN --- */
+    /* --- HEADER CON IMAGEN ACTUALIZADA --- */
     .gift-header {
       position: relative;
       text-align: center;
       padding: 80px 20px;
       color: white;
-      /* REEMPLAZA 'tu-imagen.jpg' CON LA RUTA DE TU FOTO */
+      /* IMAGEN ACTUALIZADA AQUÍ */
       background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                  url('../fotografias/portada-regalos.jpg'); 
+                  url('../fotografias/pedida.jpg'); 
       background-size: cover;
       background-position: center;
-      border-radius: 0 0 30px 30px; /* Borde redondeado abajo */
+      border-radius: 0 0 30px 30px;
       margin-bottom: 40px;
     }
 
     .gift-header h1 {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2.5rem, 5vw, 4rem); /* Texto responsive */
+      font-size: clamp(2.5rem, 5vw, 4rem);
       margin-bottom: 15px;
       text-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
@@ -173,12 +173,12 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0,0.7); /* Fondo oscuro */
-      backdrop-filter: blur(4px); /* Efecto borroso de fondo */
-      align-items: center; /* Centrar vertical */
-      justify-content: center; /* Centrar horizontal */
+      background-color: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
       padding: 20px;
-      overflow-y: auto; /* Permite scroll si la pantalla es muy chica */
+      overflow-y: auto;
     }
 
     .modal.show {
@@ -195,11 +195,10 @@
       position: relative;
       box-shadow: 0 20px 50px rgba(0,0,0,0.3);
       animation: slideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-      max-height: 90vh; /* Evita que sea más alto que la pantalla */
-      overflow-y: auto; /* Scroll interno si es necesario */
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
-    /* BOTÓN CERRAR (X) */
     .close-btn {
       position: absolute;
       top: 15px;
@@ -220,6 +219,15 @@
     }
     
     .close-btn:hover { background: #e0e0e0; color: #000; }
+
+    /* Estilos para el QR */
+    .qr-code {
+      display: block;
+      margin: 15px auto 5px; /* Centrado */
+      max-width: 180px; /* Tamaño controlado */
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
 
     /* Formulario */
     .form-group { margin-bottom: 15px; text-align: left; }
@@ -252,24 +260,28 @@
     .bank-item {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
+      align-items: flex-start; /* Alineación superior para nombres largos */
+      padding: 12px 0;
       border-bottom: 1px solid #eee;
     }
     .bank-item:last-child { border-bottom: none; }
 
-    .bank-details strong { display: block; color: var(--text-main); font-size: 0.95rem; }
-    .bank-details span { font-size: 0.85rem; color: #666; font-family: monospace; letter-spacing: 0.5px; }
+    .bank-details strong { display: block; color: var(--text-main); font-size: 0.95rem; margin-bottom: 4px; }
+    .bank-details span { font-size: 0.9rem; color: #555; font-family: monospace; letter-spacing: 0.5px; display: block; }
+    .bank-details small { display: block; color: #888; font-size: 0.8rem; margin-top: 2px; font-family: 'Montserrat', sans-serif; letter-spacing: 0; }
 
     .copy-btn {
       background: #fff;
       border: 1px solid #ddd;
       border-radius: 8px;
-      padding: 6px 12px;
+      padding: 8px 12px;
       font-size: 0.8rem;
       color: var(--primary);
       font-weight: 600;
       cursor: pointer;
+      margin-left: 10px;
+      flex-shrink: 0; /* Evita que el botón se aplaste */
+      align-self: center;
     }
     .copy-btn:active { background: var(--primary); color: white; }
 
@@ -382,18 +394,22 @@
       </p>
 
       <div class="payment-info">
-        <div class="bank-item">
-          <div class="bank-details">
+        <div class="bank-item" style="flex-wrap: wrap;">
+          <div class="bank-details" style="flex: 1;">
             <strong>Yape / Plin</strong>
             <span>960 778 888</span>
+            <small>(Carlos Daniel Ruiz Cabrera)</small>
           </div>
           <button type="button" class="copy-btn" onclick="copyText('960778888')">Copiar</button>
+          
+          <img src="../fotografias/yape.jpg" alt="QR Yape" class="qr-code" style="width: 100%; flex-basis: 100%;">
         </div>
 
         <div class="bank-item">
           <div class="bank-details">
             <strong>BCP Soles</strong>
             <span>191-99927056-0-17</span>
+            <small>(Carlos Daniel Ruiz Cabrera)</small>
           </div>
           <button type="button" class="copy-btn" onclick="copyText('19199927056017')">Copiar</button>
         </div>
@@ -402,6 +418,7 @@
           <div class="bank-details">
             <strong>Interbank</strong>
             <span>898-34897420-65</span>
+            <small>(Carlos Daniel Ruiz Cabrera)</small>
           </div>
           <button type="button" class="copy-btn" onclick="copyText('8983489742065')">Copiar</button>
         </div>
