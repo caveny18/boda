@@ -952,6 +952,10 @@
   }, { threshold: 0.1 });
   sections.forEach(section => observer.observe(section));
 </script>
+  <audio id="bgMusic" loop>
+  <source src="boda.mp3" type="audio/mpeg">
+  Tu navegador no soporta audio.
+</audio>
 <script>
   const bgMusic = document.getElementById('bgMusic');
   bgMusic.volume = 0.25; // volumen suave (25%)
@@ -966,10 +970,6 @@
   document.addEventListener('touchstart', startMusic);
 </script>
 
-<audio id="bgMusic" loop>
-  <source src="boda.mp3" type="audio/mpeg">
-  Tu navegador no soporta audio.
-</audio>
 
 </body>
 </html>
