@@ -207,6 +207,34 @@
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes fadeinup { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
     @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+/* --- BOTÓN ¿CÓMO REGALAR? --- */
+.help-btn {
+  position: relative;
+  animation: softPulse 3.5s ease-in-out infinite;
+}
+
+/* Detener animación al interactuar */
+.help-btn:hover,
+.help-btn:focus,
+.help-btn:active {
+  animation: none;
+}
+
+/* Pulso elegante */
+@keyframes softPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255,255,255,0.35);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 0 10px rgba(255,255,255,0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255,255,255,0);
+  }
+}
 
   </style>
 </head>
@@ -235,7 +263,10 @@
   <div class="header-content">
     <h1>Lista de Regalos</h1>
     <p>Ayúdanos a construir nuestro hogar.</p>
-    <a href="index.html" class="back-btn">← Volver</a>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+  <a href="index.html" class="back-btn">← Volver</a>
+  <button class="back-btn help-btn" onclick="restartTutorial()">¿Cómo regalar?</button>
+</div>
   </div>
 </header>
 <section class="gift-grid">
@@ -498,6 +529,22 @@ function closeTutorial() {
   document.getElementById('card-focus').classList.remove('highlight-active');
   document.body.classList.remove('no-scroll');
   localStorage.setItem('tutorial_final_v5', 'true');
+}
+
+function restartTutorial() {
+  // Reiniciar estado
+  step = 0;
+
+  // Limpiar posibles focos
+  const card = document.getElementById('card-focus');
+  card.classList.remove('highlight-active');
+
+  // Mostrar tutorial
+  document.getElementById('tutorialContainer').classList.add('active');
+  document.body.classList.add('no-scroll');
+
+  // Arrancar desde el paso 1
+  goStep(1);
 }
 
 /* --- LOGICA GENERAL --- */
