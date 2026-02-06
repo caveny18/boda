@@ -449,16 +449,42 @@
 </div>
 <div id="toast">¡Copiado!</div>
 
-<script>
-/* --- CONFIGURACION DE IMAGENES --- */
+<script type="module">
+/* ================= FIREBASE ================= */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  increment
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD_Jm2kd4Pr3ppjxGJbw7Xgd-1OXHQXbIc",
+  authDomain: "boda-jimena.firebaseapp.com",
+  projectId: "boda-jimena",
+  storageBucket: "boda-jimena.firebasestorage.app",
+  messagingSenderId: "150008122361",
+  appId: "1:150008122361:web:578828c33640697890cb28"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* ================= CONFIG ================= */
+const TIPO_CAMBIO = 3.4;
+let regaloActual = "";
+
+/* ================= TUTORIAL ================= */
 const tutoImages = [
   "",
-  "../fotografias/sinfondo1.png", // Paso 1
-  "../fotografias/sinfondo2.png", // Paso 2
-  "../fotografias/sinfondo3.png"  // Paso 3
+  "../fotografias/sinfondo1.png",
+  "../fotografias/sinfondo2.png",
+  "../fotografias/sinfondo3.png"
 ];
 
-/* --- LOGICA DEL TUTORIAL --- */
 let step = 0;
 
 function initTutorial() {
@@ -471,6 +497,14 @@ function initTutorial() {
   }
 }
 
+window.restartTutorial = function () {
+  step = 0;
+  document.getElementById('card-focus').classList.remove('highlight-active');
+  document.getElementById('tutorialContainer').classList.add('active');
+  document.body.classList.add('no-scroll');
+  goStep(1);
+};
+
 function goStep(num) {
   step = num;
   const group = document.getElementById('tutoGroup');
@@ -480,130 +514,105 @@ function goStep(num) {
   const btn = document.getElementById('btnNextStep');
   const targetCard = document.getElementById('card-focus');
 
-  // Actualizar imagen personaje
-  img.src = tutoImages[step] || "../fotografias/sinfondo1.png";
-  
-  // Limpiar clases de posicion anteriores
-  group.classList.remove('t-step-1', 't-step-2', 't-step-3');
-  // Limpiar foco
+  img.src = tutoImages[step] || tutoImages[1];
+  group.classList.remove('t-step-1','t-step-2','t-step-3');
   targetCard.classList.remove('highlight-active');
 
   if (step === 1) {
-    // POSICION: CENTRO
     group.classList.add('t-step-1');
-    
     title.innerText = "¡Bienvenidos!";
-    text.innerHTML = "Gracias por acompañarnos.<br>Queremos enseñarte cómo funciona esta lista.";
+    text.innerHTML = "Queremos enseñarte cómo funciona nuestra lista.";
     btn.innerText = "Empezar";
-  } 
-  else if (step === 2) {
-    // POSICION: ARRIBA DEL MEDIO (35%)
+  } else if (step === 2) {
     group.classList.add('t-step-2');
-
-    // Scroll y foco
-    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    setTimeout(() => targetCard.classList.add('highlight-active'), 600);
-
+    targetCard.scrollIntoView({behavior:'smooth', block:'center'});
+    setTimeout(()=>targetCard.classList.add('highlight-active'),600);
     title.innerText = "Aporta lo que desees";
-    text.innerHTML = "La barra muestra el progreso. Tú decides si regalar <b>S/50, S/100</b>... ¡Todo suma!";
+    text.innerHTML = "Puedes regalar el monto que tú quieras.";
     btn.innerText = "Siguiente";
-  } 
-  else if (step === 3) {
-    // POSICION: VUELVE AL CENTRO
+  } else if (step === 3) {
     group.classList.add('t-step-3');
-    targetCard.classList.add('highlight-active'); // Mantener foco
-    
-    title.innerText = "Todo es automático";
-    text.innerHTML = "Haz clic en <b>Regalar</b>, usa el QR o copia la cuenta, transfiere y registra aquí el monto.";
+    targetCard.classList.add('highlight-active');
+    title.innerText = "Registro automático";
+    text.innerHTML = "Tu aporte se suma en tiempo real 💛";
     btn.innerText = "¡Listo!";
-  } 
-  else {
+  } else {
     closeTutorial();
   }
 }
 
-function nextStep() { goStep(step + 1); }
+window.nextStep = () => goStep(step + 1);
 
-function closeTutorial() {
+window.closeTutorial = function () {
   document.getElementById('tutorialContainer').classList.remove('active');
   document.getElementById('card-focus').classList.remove('highlight-active');
   document.body.classList.remove('no-scroll');
-  localStorage.setItem('tutorial_final_v5', 'true');
-}
+  localStorage.setItem('tutorial_final_v5','true');
+};
 
-function restartTutorial() {
-  // Reiniciar estado
-  step = 0;
-
-  // Limpiar posibles focos
-  const card = document.getElementById('card-focus');
-  card.classList.remove('highlight-active');
-
-  // Mostrar tutorial
-  document.getElementById('tutorialContainer').classList.add('active');
-  document.body.classList.add('no-scroll');
-
-  // Arrancar desde el paso 1
-  goStep(1);
-}
-
-/* --- LOGICA GENERAL --- */
-function copyText(val) {
+/* ================= UI ================= */
+window.copyText = function(val){
   navigator.clipboard.writeText(val);
-  const toast = document.getElementById("toast");
-  toast.className = "show";
-  setTimeout(() => toast.className = toast.className.replace("show", ""), 2500);
-}
+  const t=document.getElementById("toast");
+  t.className="show";
+  setTimeout(()=>t.className="",2500);
+};
 
-const TIPO_CAMBIO = 3.4;
-let regaloActual = "";
-let acumulados = JSON.parse(localStorage.getItem('regalos_db')) || {};
-const metas = { "Refrigeradora": 1400, 
-  "Cocina": 799, 
-  "Lavadora": 1600,
-  "Cama": 1700,
-  "TV": 500,
-  "Sala": 2300,
-  "Comedor": 700,
-  "Microondas": 450,
-  "Ollas": 350,
-  "Licuadora": 75,
-  "Vajilla": 120,
-  "Waflera": 49 };
-
-document.addEventListener('DOMContentLoaded', () => {
-  for (let k in metas) updateUI(k);
-  initTutorial();
-});
-
-function updateUI(item) {
-  if (!document.getElementById("fill-"+item)) return;
-  const val = acumulados[item] || 0;
-  const pct = Math.min((val / metas[item])*100, 100);
-  document.getElementById("fill-"+item).style.width = pct + "%";
-  document.getElementById("text-"+item).innerText = `S/ ${val.toFixed(2)} de S/ ${metas[item]}`;
-}
-
-function openModal(item, meta) {
+window.openModal = function(item){
   regaloActual = item;
   document.getElementById('modalTitle').innerText = "Regalo: " + item;
   document.getElementById('giftModal').classList.add('show');
-}
-function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+};
 
-function confirmGift(e) {
-  e.preventDefault();
-  const m = parseFloat(document.getElementById('monto').value);
-  const mon = document.getElementById('moneda').value;
-  if(isNaN(m) || m<=0) return;
-  const totalSoles = (mon === 'USD') ? m * TIPO_CAMBIO : m;
-  acumulados[regaloActual] = (acumulados[regaloActual] || 0) + totalSoles;
-  localStorage.setItem('regalos_db', JSON.stringify(acumulados));
-  updateUI(regaloActual);
-  closeModal('giftModal');
-  document.getElementById('msgConfirm').innerText = `Gracias ${document.getElementById('nombre').value}, recibimos tu cariño.`;
-  document.getElementById('confirmModal').classList.add('show');
+window.closeModal = id =>
+  document.getElementById(id).classList.remove('show');
+
+/* ================= FIRESTORE ================= */
+async function cargarRegalos() {
+  const snap = await getDocs(collection(db,"regalos"));
+  snap.forEach(d=>{
+    const r=d.data();
+    const total=r.total_actual||0;
+    const pct=Math.min((total/r.objetivo)*100,100);
+    const id=r.nombre;
+
+    if(document.getElementById("fill-"+id)){
+      document.getElementById("fill-"+id).style.width=pct+"%";
+      document.getElementById("text-"+id).innerText=
+        `S/ ${total.toFixed(2)} de S/ ${r.objetivo}`;
+    }
+  });
 }
+
+window.confirmGift = async function(e){
+  e.preventDefault();
+  const monto=parseFloat(document.getElementById('monto').value);
+  const moneda=document.getElementById('moneda').value;
+  if(!monto||monto<=0) return;
+
+  const soles = moneda==="USD" ? monto*TIPO_CAMBIO : monto;
+
+  const snap = await getDocs(collection(db,"regalos"));
+  snap.forEach(async d=>{
+    if(d.data().nombre===regaloActual){
+      await updateDoc(doc(db,"regalos",d.id),{
+        total_actual: increment(soles)
+      });
+    }
+  });
+
+  closeModal('giftModal');
+  document.getElementById('msgConfirm').innerText =
+    `Gracias ${document.getElementById('nombre').value}, recibimos tu cariño 💛`;
+  document.getElementById('confirmModal').classList.add('show');
+  cargarRegalos();
+};
+
+/* ================= INIT ================= */
+document.addEventListener('DOMContentLoaded',()=>{
+  cargarRegalos();
+  initTutorial();
+});
 </script>
 
 </body>
