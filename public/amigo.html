@@ -780,49 +780,49 @@
         <h3>Un encuentro inesperado</h3>
       </div>
 
-      <div class="timeline-card" data-photo="../fotografias/tupper.png" data-date="Julio 2023" data-title="Un tupper nos unió" data-desc="Entre risas, comida y complicidad, algo empezó a crecer.">
+      <div class="timeline-card" data-photo="../fotografias/entrega.jpeg" data-date="Julio 2023" data-title="Un tupper nos unió" data-desc="Por la necesidad de devolver un tapper es que comenzamos a conversar por whatsapp y el resto es historia">
         <div class="timeline-icon"><img src="../fotografias/tupper.png" alt="Tapper"></div>
         <span class="timeline-date">Julio 2023</span>
         <h3>Un tupper nos unió</h3>
       </div>
 
-      <div class="timeline-card" data-photo="../fotografias/rosayclave.jpeg" data-date="Octubre 2023" data-title="El primer baile" data-desc="Sin coreografía, pero con el corazón sincronizado.">
+      <div class="timeline-card" data-photo="../fotografias/rosayclavel.jpeg" data-date="Octubre 2023" data-title="El primer baile" data-desc="Sin coreografía, pero con el corazón sincronizado y puedo decir que mis pasos la flecharon jajaja.">
         <div class="timeline-icon"><img src="../fotografias/baile.png" alt="Baile"></div>
         <span class="timeline-date">Octubre 2023</span>
         <h3>El primer baile</h3>
       </div>
 
-      <div class="timeline-card" data-photo="../fotografias/corazon en el templo.jpeg" data-date="Octubre 2023" data-title="Limpieza juntos" data-desc="Aprendimos que en equipo todo es más fácil.">
+      <div class="timeline-card" data-photo="../fotografias/corazon en el templo.jpeg" data-date="Octubre 2023" data-title="Limpieza juntos" data-desc="Si, nos hicimos más amigos limpiando un baño en la capilla y ahí aprendimos que los dos amamos servir a Dios y a los que nos rodean.">
         <div class="timeline-icon"><img src="../fotografias/limpieza.png" alt="Limpieza"></div>
         <span class="timeline-date">Octubre 2023</span>
         <h3>Limpieza juntos</h3>
       </div>
 
-      <div class="timeline-card" data-photo="../fotografias/1cita.jpeg" data-date="Diciembre 2023" data-title="Caminata a casa" data-desc="Las mejores conversaciones siempre fueron caminando.">
+      <div class="timeline-card" data-photo="../fotografias/todo.png" data-date="Diciembre 2023" data-title="Caminata a casa" data-desc="Las mejores conversaciones siempre fueron caminando y asi empezó a crecer nuestra amistad.">
         <div class="timeline-icon"><img src="../fotografias/caminata.png" alt="Caminata"></div>
         <span class="timeline-date">Diciembre 2023</span>
         <h3>Caminata a casa</h3>
       </div>
 
-      <div class="timeline-card highlight" data-photo="../fotografias/primerbeso.jpeg" data-date="6 Dic 2023" data-title="Una pedida especial" data-desc="El inicio formal de nuestro sueño.">
+      <div class="timeline-card highlight" data-photo="../fotografias/primerbeso.jpeg" data-date="6 Dic 2023" data-title="Una pedida especial" data-desc="Ella dijo que si aqui por primera vez y asi empezo mi primer amor">
         <div class="timeline-icon"><img src="../fotografias/parque.png" alt="Pedida"></div>
         <span class="timeline-date">6 dic 2023</span>
         <h3>Una pedida especial</h3>
       </div>
 
-      <div class="timeline-card" data-photo="../fotografias/templodelosolivos.jpeg" data-date="Diciembre 2023" data-title="Puertas abiertas" data-desc="Una visita especial a un lugar sagrado.">
+      <div class="timeline-card" data-photo="../fotografias/templodelosolivos.jpeg" data-date="Diciembre 2023" data-title="Puertas abiertas" data-desc="Una visita especial a un lugar sagrado y ahi fui donde senti que lo queria tener a mi lado por el resto de mi vida.">
         <div class="timeline-icon"><img src="../fotografias/puertas.png" alt="Puertas"></div>
         <span class="timeline-date">Diciembre 2023</span>
         <h3>Puertas abiertas</h3>
       </div>
 
-      <div class="timeline-card" data-photo="../fotografias/14defebrero.jpeg" data-date="14 Feb 2024" data-title="Una cita especial" data-desc="Cada día más fuertes, más unidos.">
+      <div class="timeline-card" data-photo="../fotografias/14defebrero.jpeg" data-date="14 Feb 2024" data-title="Una cita especial" data-desc="Cada día a su lado es especial ella hace que lo cotidiano sea especial, cada momento a su lado es un 14 de febrero">
         <div class="timeline-icon"><img src="../fotografias/corazon.png" alt="Amor"></div>
         <span class="timeline-date">14 feb 2024</span>
         <h3>Un cita especial</h3>
       </div>
 
-      <div class="timeline-card highlight" data-photo="../fotografias/pedida.jpeg" data-date="21 Dic 2025" data-title="Pedida oficial" data-desc="El compromiso definitivo de nuestras vidas.">
+      <div class="timeline-card highlight" data-photo="../fotografias/pedida.jpeg" data-date="21 Dic 2025" data-title="Pedida oficial" data-desc="Entre risas y silencios ella dijo que ¡SI!,yo sin palabras por los nervios ">
         <div class="timeline-icon"><img src="../fotografias/anillo.png" alt="Anillo"></div>
         <span class="timeline-date">21 dic 2025</span>
         <h3>Una pedida nerviosa</h3>
@@ -945,6 +945,24 @@
   }, { threshold: 0.1 });
   sections.forEach(section => observer.observe(section));
 </script>
+  <audio id="bgMusic" loop>
+  <source src="boda.mp3" type="audio/mpeg">
+  Tu navegador no soporta audio.
+</audio>
+<script>
+  const bgMusic = document.getElementById('bgMusic');
+  bgMusic.volume = 0.25; // volumen suave (25%)
+
+  const startMusic = () => {
+    bgMusic.play().catch(() => {});
+    document.removeEventListener('click', startMusic);
+    document.removeEventListener('touchstart', startMusic);
+  };
+
+  document.addEventListener('click', startMusic);
+  document.addEventListener('touchstart', startMusic);
+</script>
+
 
 </body>
 </html>
